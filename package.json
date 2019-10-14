@@ -1,0 +1,26 @@
+{
+  "name": "petty-cash",
+  "version": "1.0.0",
+  "description": "App to keep track of Petty Cash boxes",
+  "main": "index.js",
+  "engines": {
+    "node": "12.3.0",
+    "npm": "6.12.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "dev": "npm run server"
+  },
+  "author": "Benjamin Godwin",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.4",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
