@@ -9,12 +9,6 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  cashboxes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cashbox'
-    }
-  ],
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });

@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Cashbox');
+require('./models/Transaction');
 require('./services/passport');
 
 const app = express();
