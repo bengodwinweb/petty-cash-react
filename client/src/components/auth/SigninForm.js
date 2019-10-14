@@ -44,7 +44,7 @@ class SigninForm extends Component {
                     className="ml-auto"
                   >
                     <MDBIcon far icon="envelope" className="mr-3" />
-                    Sign up with Email
+                    Sign in with Email
                   </MDBBtn>
                 </div>
               </form>

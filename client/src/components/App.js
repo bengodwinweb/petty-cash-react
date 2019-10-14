@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -15,7 +15,12 @@ class App extends Component {
     this.props.fetchUser();
   }
 
+  isAuthenticated() {
+    return !!this.props.auth;
+  }
+
   render() {
+    console.log(this.isAuthenticated());
     return (
       <div>
         <BrowserRouter>
@@ -25,8 +30,15 @@ class App extends Component {
             <Route path="/users/signup" component={Signup} />
             <Route path="/users/signin" component={Signin} />
             <Route path="/users/login" component={Landing} />
-            <Route path="/cashboxes" exact component={Cashboxes} />
-            <Route path="/cashboxes/new" component={CashboxesNew} />
+            <Route
+              path="/cashboxes"
+              exact
+              component={this.isAuthenticated() ? Cashboxes : Signin}
+            />
+            <Route
+              path="/cashboxes/new"
+              component={this.isAuthenticated() ? CashboxesNew : Signin}
+            />
           </div>
         </BrowserRouter>
       </div>
@@ -34,7 +46,11 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = ({ auth }) => {
+  return { auth };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(App);

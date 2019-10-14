@@ -10,12 +10,14 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "dev": "npm run server"
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Benjamin Godwin",
   "license": "ISC",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "concurrently": "^5.0.0",
     "cookie-session": "^1.3.3",
     "express": "^4.17.1",
     "mongoose": "^5.7.4",

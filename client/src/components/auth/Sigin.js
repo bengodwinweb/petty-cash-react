@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { MDBBtn, MDBIcon } from 'mdbreact';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import SigninForm from './SigninForm';
+import * as actions from '../../actions';
 
-const Signin = () => {
-  return (
-    <div>
-      <div className="d-flex flex-column col-md-6">
-        <MDBBtn social="gplus" color="indigo" href="/api/users/google">
-          <MDBIcon fab icon="google" className="mr-3" />
-          Sign in with Google
-        </MDBBtn>
-        <MDBBtn social="email" color="mdb-color" href="">
-          <MDBIcon far icon="envelope" className="mr-3" />
-          Sign in with Email
-        </MDBBtn>
+class Signin extends Component {
+  render() {
+    return (
+      <div>
+        <h3 className="mb-4">Sign In</h3>
+        <div className="">
+          <MDBBtn
+            social="gplus"
+            color="blue"
+            href="/api/users/google"
+            className="mb-4 ml-4"
+          >
+            <MDBIcon fab icon="google" className="mr-3" />
+            Sign in with Google
+          </MDBBtn>
+          <SigninForm
+            onSurveySubmit={values =>
+              this.props.submitSignin(values, this.props.history)
+            }
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-export default Signin;
+export default connect(
+  null,
+  actions
+)(Signin);

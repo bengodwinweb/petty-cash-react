@@ -26,7 +26,9 @@ exports.signup = (req, res, next) => {
       email,
       password
     });
-    newUser.save().catch(err => console.log(err));
-    res.send({ message: 'successful sign up' });
+    newUser
+      .save()
+      .then(res.send(newUser))
+      .catch(err => console.log(err));
   });
 };

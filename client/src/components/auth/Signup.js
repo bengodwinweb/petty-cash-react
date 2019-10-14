@@ -6,8 +6,6 @@ import SigninForm from './SigninForm';
 import * as actions from '../../actions';
 
 class Signup extends Component {
-  state = { showReview: false };
-
   render() {
     return (
       <div>

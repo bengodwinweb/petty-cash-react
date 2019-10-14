@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import requireAuth from '../../utils/requireAuth';
 
 class Cashboxes extends Component {
   render() {
@@ -12,4 +11,4 @@ const mapStateToProps = ({ auth }) => {
   return { auth };
 };
 
-export default connect(mapStateToProps)(requireAuth(Cashboxes));
+export default connect(mapStateToProps)(Cashboxes);

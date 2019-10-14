@@ -27,7 +27,6 @@ const googleOptions = {
 const googleLogin = new GoogleStrategy(
   googleOptions,
   async (accessToken, refreshToken, profile, done) => {
-    console.log('made it to google strategy');
     const existingUser = await User.findOne({ googleId: profile.id });
 
     if (existingUser) {
@@ -36,7 +35,7 @@ const googleLogin = new GoogleStrategy(
 
     const newUser = await new User({
       googleId: profile.id,
-      name: profile.displayName
+      email: profile._json.email
     }).save();
     done(null, newUser);
   }
