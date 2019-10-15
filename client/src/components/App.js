@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.isAuthenticated());
     return (
       <div>
         <BrowserRouter>
@@ -46,8 +45,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ auth }) => {
-  return { auth };
+const mapStateToProps = ({ auth, cashboxes }) => {
+  return { auth, cashboxes };
 };
 
 export default connect(

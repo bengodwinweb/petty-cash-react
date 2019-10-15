@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import CashboxesList from './CashboxesList';
 
 class Cashboxes extends Component {
   render() {
-    return <div>Cashboxes</div>;
+    return (
+      <div>
+        <h2>Cashboxes</h2>
+        <CashboxesList />
+      </div>
+    );
   }
 }
 
