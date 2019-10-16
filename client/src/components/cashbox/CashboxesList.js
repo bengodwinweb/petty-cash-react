@@ -23,7 +23,7 @@ class CashboxesList extends Component {
               </h5>
               <p className="mt-0 mb-0">
                 <span className="mr-0">$</span>
-                {cashbox.fundTotal} Total
+                {parseFloat(cashbox.fundTotal).toFixed(2)} Total
               </p>
             </MDBCardBody>
           </MDBCard>

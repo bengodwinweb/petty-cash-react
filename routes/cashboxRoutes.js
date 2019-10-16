@@ -2,6 +2,14 @@ const requireAuth = require('../middleware/auth/requireAuth');
 const mongoose = require('mongoose');
 
 const Cashbox = mongoose.model('Cashbox');
+const Box = mongoose.model('Box');
+
+// Box helpers
+const {
+  defaultBox,
+  incrementBox,
+  decrementBox
+} = require('../services/boxConfig');
 
 module.exports = app => {
   app.get('/api/cashboxes', requireAuth, async (req, res) => {
@@ -20,9 +28,16 @@ module.exports = app => {
     const cashbox = new Cashbox({
       companyName,
       cashboxName,
-      fundTotal,
-      _user: req.user.id
+      fundTotal: parseFloat(fundTotal).toFixed(2),
+      _user: req.user.id,
+      currentBox: new Box(defaultBox)
     });
+
+    if (cashbox.currentBox.boxTotal > cashbox.fundTotal) {
+      cashbox.currentBox = decrementBox(cashbox.currentBox, cashbox.fundTotal);
+    } else if (cashbox.currentBox.boxTotal < cashbox.fundTotal) {
+      cashbox.currentBox = incrementBox(cashbox.currentBox, cashbox.fundTotal);
+    }
 
     try {
       await cashbox.save();
