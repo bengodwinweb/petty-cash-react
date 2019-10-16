@@ -25,6 +25,10 @@ const CashboxSchema = new Schema({
       ref: 'Transaction'
     }
   ],
+  currentSpent: {
+    type: Number,
+    default: 0
+  },
   currentBox: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Box'

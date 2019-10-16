@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { MDBBtn, MDBIcon } from 'mdbreact';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import CashboxForm from './CashboxForm';
@@ -9,7 +8,7 @@ class Signup extends Component {
   render() {
     return (
       <div>
-        <h3 className="mb-4">Register</h3>
+        <h3 className="mb-4">New Petty Cash Fund</h3>
         <div className="">
           <CashboxForm
             onSurveySubmit={values =>

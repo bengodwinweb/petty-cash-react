@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle } from 'mdbreact';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBBtn } from 'mdbreact';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
@@ -25,6 +26,9 @@ class CashboxesList extends Component {
                 <span className="mr-0">$</span>
                 {parseFloat(cashbox.fundTotal).toFixed(2)} Total
               </p>
+              <Link to={`/cashboxes/show/${cashbox._id}`}>
+                <MDBBtn>View</MDBBtn>
+              </Link>
             </MDBCardBody>
           </MDBCard>
         </div>

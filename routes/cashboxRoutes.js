@@ -24,7 +24,9 @@ module.exports = app => {
   });
 
   app.post('/api/cashboxes', requireAuth, async (req, res) => {
-    const { companyName, cashboxName, fundTotal } = req.body;
+    console.log('post to /api/cashboxes');
+    let { companyName, cashboxName, fundTotal = 500 } = req.body;
+    fundTotal = parseInt(fundTotal).toFixed(2);
 
     let currentBox = new Box(defaultBox);
 
@@ -50,10 +52,22 @@ module.exports = app => {
     try {
       await cashbox.save();
 
-      console.log(cashbox);
       res.redirect('/api/cashboxes');
     } catch (err) {
       res.status(422).send(err);
     }
+  });
+
+  app.get('/api/cashboxes/:id', requireAuth, async (req, res) => {
+    console.log(`get to /api/cashboxes/${req.params.id}`);
+
+    const cashbox = await Cashbox.findOne({ _id: req.params.id });
+    console.log(cashbox);
+
+    // if (!cashbox) {
+    //   return res.send({});
+    // }
+
+    res.send(cashbox);
   });
 };

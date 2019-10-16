@@ -8,6 +8,7 @@ import Signin from './auth/Sigin';
 import Signup from './auth/Signup';
 import Cashboxes from './cashbox/Cashboxes';
 import CashboxesNew from './cashbox/CashboxesNew';
+import CashboxesShow from './cashbox/CashboxesShow';
 const Landing = () => <div>Landing</div>;
 
 class App extends Component {
@@ -37,6 +38,10 @@ class App extends Component {
             <Route
               path="/cashboxes/new"
               component={this.isAuthenticated() ? CashboxesNew : Signin}
+            />
+            <Route
+              path="/cashboxes/show/:cashboxId"
+              component={this.isAuthenticated() ? CashboxesShow : Signin}
             />
           </div>
         </BrowserRouter>
