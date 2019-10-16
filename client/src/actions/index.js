@@ -26,3 +26,10 @@ export const fetchCashboxes = () => async dispatch => {
 
   dispatch({ type: FETCH_CASHBOXES, payload: res.data });
 };
+
+export const submitCashbox = (values, history) => async dispatch => {
+  const res = await axios.post('/api/cashboxes', values);
+
+  history.push('/cashboxes');
+  dispatch({ type: FETCH_CASHBOXES, payload: res.data });
+};

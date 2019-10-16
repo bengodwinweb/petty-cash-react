@@ -7,8 +7,8 @@ import Header from './Header';
 import Signin from './auth/Sigin';
 import Signup from './auth/Signup';
 import Cashboxes from './cashbox/Cashboxes';
+import CashboxesNew from './cashbox/CashboxesNew';
 const Landing = () => <div>Landing</div>;
-const CashboxesNew = () => <div>New Cashbox</div>;
 
 class App extends Component {
   componentDidMount() {
