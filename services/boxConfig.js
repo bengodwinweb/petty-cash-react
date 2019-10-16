@@ -1,3 +1,19 @@
+const emptyBox = {
+  twenties: 0,
+  tens: 0,
+  fives: 0,
+  ones: 0,
+  qrolls: 0,
+  drolls: 0,
+  nrolls: 0,
+  prolls: 0,
+  quarters: 0,
+  dimes: 0,
+  nickels: 0,
+  pennies: 0,
+  boxTotal: 0
+};
+
 const defaultBox = {
   twenties: 14,
   tens: 11,
@@ -92,4 +108,22 @@ const incrementBox = (box, idealTotal) => {
   return box;
 };
 
-module.exports = { sumBox, decrementBox, incrementBox, defaultBox };
+const makeChange = (box, fundTotal) => {
+  const diff = fundTotal - sumBox(box);
+  let resultBox = emptyBox;
+
+  if (sumBox(resultBox) < diff) {
+    incrementBox(resultBox, diff);
+  }
+
+  return resultBox;
+};
+
+module.exports = {
+  sumBox,
+  decrementBox,
+  incrementBox,
+  defaultBox,
+  emptyBox,
+  makeChange
+};
