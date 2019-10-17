@@ -47,6 +47,7 @@ const sumBox = box => {
 };
 
 const decrementBox = (box, idealTotal) => {
+  console.log(`DECREMENT ${sumBox(box)} to ${idealTotal}`);
   while (sumBox(box) > idealTotal) {
     while (sumBox(box) >= idealTotal + 20 && box.twenties > 0) {
       box.twenties--;
@@ -78,6 +79,7 @@ const decrementBox = (box, idealTotal) => {
 };
 
 const incrementBox = (box, idealTotal) => {
+  console.log(`INCREMENT ${sumBox(box)} to ${idealTotal}`);
   while (sumBox(box) < idealTotal) {
     while (sumBox(box) <= idealTotal - 20) {
       box.twenties++;

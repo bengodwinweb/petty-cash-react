@@ -1,9 +1,5 @@
 const requireAuth = require('../middleware/auth/requireAuth');
 const mongoose = require('mongoose');
-
-const Cashbox = mongoose.model('Cashbox');
-const Box = mongoose.model('Box');
-
 // Box helpers
 const {
   defaultBox,
@@ -11,6 +7,9 @@ const {
   decrementBox,
   makeChange
 } = require('../services/boxConfig');
+
+const Cashbox = mongoose.model('Cashbox');
+const Box = mongoose.model('Box');
 
 module.exports = app => {
   app.get('/api/cashboxes', requireAuth, async (req, res) => {
@@ -49,8 +48,13 @@ module.exports = app => {
       changeBox
     });
 
+    cashbox.currentBox._cashbox = cashbox._id;
+    cashbox.changeBox._cashbox = cashbox._id;
+
     try {
       await cashbox.save();
+      await currentBox.save();
+      await changeBox.save();
 
       res.redirect('/api/cashboxes');
     } catch (err) {
@@ -61,12 +65,10 @@ module.exports = app => {
   app.get('/api/cashboxes/:id', requireAuth, async (req, res) => {
     console.log(`get to /api/cashboxes/${req.params.id}`);
 
-    const cashbox = await Cashbox.findOne({ _id: req.params.id });
-    console.log(cashbox);
-
-    // if (!cashbox) {
-    //   return res.send({});
-    // }
+    const cashbox = await Cashbox.findOne({ _id: req.params.id })
+      .populate('transactions')
+      .populate('currentBox')
+      .populate('changeBox');
 
     res.send(cashbox);
   });

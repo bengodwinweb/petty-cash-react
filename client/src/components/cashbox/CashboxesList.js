@@ -10,15 +10,18 @@ class CashboxesList extends Component {
   }
 
   renderCashboxes() {
-    if (!this.props.cashboxes) {
+    if (!this.props.cashboxes.length) {
       return <div>No Cashboxes</div>;
     }
     return this.props.cashboxes.map(cashbox => {
       return (
         <div key={cashbox._id} className="col-sm-6 col-lg-4 col-xl-3 mt-3">
-          <MDBCard className="border-default p-3">
+          <MDBCard className="border-default p-3 text-center pb-0">
             <MDBCardTitle className="mb-0">{cashbox.companyName}</MDBCardTitle>
-            <MDBCardBody className="p-3 mt-2" style={{ fontWeight: '300' }}>
+            <MDBCardBody
+              className="p-3 pb-0 mb-0 mt-2"
+              style={{ fontWeight: '300' }}
+            >
               <h5 className="mb-2" style={{ fontWeight: '300' }}>
                 {cashbox.cashboxName}
               </h5>
@@ -26,8 +29,9 @@ class CashboxesList extends Component {
                 <span className="mr-0">$</span>
                 {parseFloat(cashbox.fundTotal).toFixed(2)} Total
               </p>
+              <hr />
               <Link to={`/cashboxes/show/${cashbox._id}`}>
-                <MDBBtn>View</MDBBtn>
+                <MDBBtn className="mb-0">View</MDBBtn>
               </Link>
             </MDBCardBody>
           </MDBCard>
