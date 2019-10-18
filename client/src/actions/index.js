@@ -35,10 +35,8 @@ export const submitCashbox = (values, history) => async dispatch => {
 };
 
 export const fetchCashbox = cashboxId => async dispatch => {
-  console.log(`fetching cashbox with id of ${cashboxId}`);
   const res = await axios.get(`/api/cashboxes/${cashboxId}`);
 
-  console.log(res);
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
 
@@ -47,8 +45,6 @@ export const submitTransaction = (
   cashboxId,
   history
 ) => async dispatch => {
-  console.log(values);
-  console.log(history);
   const res = await axios.post(
     `/api/cashboxes/${cashboxId}/transactions`,
     values

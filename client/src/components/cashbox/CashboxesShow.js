@@ -3,13 +3,12 @@ import { MDBJumbotron, MDBBtn, MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import TransactionList from './transaction/TransactionList';
-import Box from './Box';
+import TransactionList from '../transaction/TransactionList';
+import Box from '../box/Box';
 
 class CashboxShow extends Component {
   componentDidMount() {
     const { cashboxId } = this.props.match.params;
-    console.log(cashboxId);
     this.props.fetchCashbox(cashboxId);
   }
 
@@ -37,7 +36,7 @@ class CashboxShow extends Component {
                 <p className="my-2 lead" style={{ fontWeight: '200' }}>
                   Fund Total: ${fundTotal}
                 </p>
-                <p className=" lead" style={{ fontWeight: '200' }}>
+                <p className="lead" style={{ fontWeight: '200' }}>
                   Remaining: ${currentBox.boxTotal}
                 </p>
                 <hr className="my-2" />

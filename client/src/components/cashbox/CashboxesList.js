@@ -27,7 +27,7 @@ class CashboxesList extends Component {
               </h5>
               <p className="mt-0 mb-0">
                 <span className="mr-0">$</span>
-                {parseFloat(cashbox.fundTotal).toFixed(2)} Total
+                {(cashbox.fundTotal - cashbox.currentSpent).toFixed(2)}
               </p>
               <hr />
               <Link to={`/cashboxes/show/${cashbox._id}`}>

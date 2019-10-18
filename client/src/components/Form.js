@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import transactionFields from './cashbox/transaction/transactionFields';
+import transactionFields from './transaction/transactionFields';
 import CustomField from './CustomField';
 
 class Form extends Component {
-  componentDidMount() {
-    console.log(this.props.cashboxes);
-    if (this.props.cashboxes) {
-      // this.props.values.cashboxId = this.props.cashboxes._id;
-      // console.log('updated values with cashboxes._id');
-    }
-  }
-
   decrease = () => {
     this.setState({ value: this.state.value - 1 });
   };

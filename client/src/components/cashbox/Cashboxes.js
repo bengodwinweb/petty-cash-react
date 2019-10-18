@@ -8,7 +8,7 @@ class Cashboxes extends Component {
   render() {
     return (
       <div>
-        <h2>Cashboxes</h2>
+        <h2 className="ml-3 pt-2 display-4">Cashboxes</h2>
         <CashboxesList />
         <Link to="/cashboxes/new">
           <MDBBtn
