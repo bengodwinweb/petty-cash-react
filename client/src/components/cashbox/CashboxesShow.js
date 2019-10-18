@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  MDBJumbotron,
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBIcon,
-  MDBCardBody,
-  MDBCardText,
-  MDBCardTitle
-} from 'mdbreact';
+import { MDBJumbotron, MDBBtn, MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
@@ -28,8 +18,6 @@ class CashboxShow extends Component {
       cashboxName,
       companyName,
       fundTotal,
-      transactions,
-      currentSpent,
       currentBox,
       changeBox
     } = this.props.cashboxes;
@@ -72,12 +60,10 @@ class CashboxShow extends Component {
         </MDBRow>
 
         <div className="my-4">
-          {/* Pass in transactions={transactions} after testing */}
           <TransactionList />
         </div>
 
         <div className="my-4">
-          {/* Pass in transactions={transactions} after testing */}
           <Box box={currentBox} />
         </div>
       </MDBContainer>

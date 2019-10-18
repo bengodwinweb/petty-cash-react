@@ -11,8 +11,10 @@ import {
   MDBCardTitle
 } from 'mdbreact';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import transactionFields from './transactionFields';
 import Form from '../../Form';
+import * as actions from '../../../actions';
 
 class TransactionList extends Component {
   state = {
@@ -65,7 +67,20 @@ class TransactionList extends Component {
     console.log(transactionFields);
     return (
       <MDBCard className="p-4 my-4" key="transactionForm">
-        <Form FIELDS={transactionFields} />
+        <Form
+          FIELDS={transactionFields}
+          onCancel={this.toggleForm}
+          onTransactionSubmit={
+            (values => {
+              return this.props.submitTransaction(
+                values,
+                this.props.cashboxes._id,
+                this.props.history
+              );
+            },
+            this.toggleForm)
+          }
+        />
       </MDBCard>
     );
   }
@@ -73,22 +88,6 @@ class TransactionList extends Component {
   toggleForm = () => {
     this.setState({ showForm: !this.state.showForm });
   };
-
-  renderButton() {
-    if (this.state.showForm) {
-      return (
-        <MDBBtn outline size="sm" color="danger" onClick={this.toggleForm}>
-          Cancel
-        </MDBBtn>
-      );
-    }
-
-    return (
-      <MDBBtn outline size="sm" color="default" onClick={this.toggleForm}>
-        Add New
-      </MDBBtn>
-    );
-  }
 
   render() {
     return (
@@ -120,7 +119,14 @@ class TransactionList extends Component {
             </MDBRow>
             {this.renderList()}
             <div className="d-flex flex-column-reverse flex-sm-row-reverse justify-content-start mt-4 mb-0 align-items-sm-end">
-              {this.renderButton()}
+              <MDBBtn
+                outline
+                size="sm"
+                color="default"
+                onClick={this.toggleForm}
+              >
+                Add New
+              </MDBBtn>
               <h5 className="mr-5">
                 Total - $
                 {parseFloat(this.props.cashboxes.currentSpent).toFixed(2)}
@@ -139,4 +145,7 @@ const mapStateToProps = ({ cashboxes }) => {
   return { cashboxes };
 };
 
-export default connect(mapStateToProps)(TransactionList);
+export default connect(
+  mapStateToProps,
+  actions
+)(withRouter(TransactionList));

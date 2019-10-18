@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import transactionFields from './cashbox/transaction/transactionFields';
-import Field from './Field';
+import CustomField from './CustomField';
 
 class Form extends Component {
   componentDidMount() {
-    console.log(this.props);
+    console.log(this.props.cashboxes);
     if (this.props.cashboxes) {
       // this.props.values.cashboxId = this.props.cashboxes._id;
       // console.log('updated values with cashboxes._id');
@@ -30,7 +30,7 @@ class Form extends Component {
           type={field.type}
           name={field.name}
           key={field.name}
-          component={Field}
+          component={CustomField}
           FIELDS={this.props.FIELDS}
         />
       );
@@ -38,9 +38,6 @@ class Form extends Component {
   }
 
   render() {
-    if (!this.props.cashboxes) {
-      return <div>Loading...</div>;
-    }
     return (
       <div>
         <MDBContainer className="">
@@ -50,12 +47,15 @@ class Form extends Component {
                 className=""
                 style={{ flexWrap: 'wrap' }}
                 onSubmit={this.props.handleSubmit(values =>
-                  this.props.onSurveySubmit(values)
+                  this.props.onTransactionSubmit(values)
                 )}
               >
                 <div className="col-12">{this.renderFields()}</div>
-                <div className="mt-4 d-flex col-12">
-                  <MDBBtn color="primary" type="submit" className="ml-auto">
+                <div className="mt-4 d-flex flex-column flex-md-row justify-content-end col-12">
+                  <MDBBtn color="danger" outline onClick={this.props.onCancel}>
+                    Cancel
+                  </MDBBtn>
+                  <MDBBtn outline color="default" type="submit" className="">
                     Submit
                   </MDBBtn>
                 </div>
@@ -71,17 +71,23 @@ class Form extends Component {
 const validate = values => {
   const errors = {};
 
-  // this.props.FIELDS.forEach(({ name }) => {
-  //   if (!values[name]) {
-  //     errors[name] = 'This field is required';
-  //   }
-  // });
+  transactionFields.forEach(({ name, required, min, max }) => {
+    if (min) {
+      if (values[name] < min || values[name] > max) {
+        errors[name] = `Value must be between ${min} and ${max}`;
+      }
+    }
+
+    if (!values[name] && required) {
+      errors[name] = 'This field is required';
+    }
+  });
 
   return errors;
 };
 
-const mapStateToProps = ({ cashboxes, form }) => {
-  return { cashboxes, form };
+const mapStateToProps = ({ cashboxes }) => {
+  return { cashboxes };
 };
 
 Form = connect(mapStateToProps)(Form);

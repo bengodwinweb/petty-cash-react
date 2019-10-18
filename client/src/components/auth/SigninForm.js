@@ -16,7 +16,6 @@ class SigninForm extends Component {
           key={field.name}
           component={SurveyField}
           style={{}}
-          className="orange"
         />
       );
     });

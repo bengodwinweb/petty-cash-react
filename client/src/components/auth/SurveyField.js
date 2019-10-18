@@ -1,10 +1,7 @@
 // SurveyField contains logic to render a single label and text input
 import React from 'react';
 
-export default (
-  { input, label, type, kentucky, meta: { error, touched } },
-  FIELDS
-) => {
+export default ({ input, label, type, meta: { error, touched } }, FIELDS) => {
   return (
     <div>
       <label className="right mt-3 mb-1">{label}</label>

@@ -26,7 +26,6 @@ class CashboxForm extends Component {
           name={field.name}
           key={field.name}
           component={SurveyField}
-          kentucky={field.value}
         />
       );
     });
