@@ -59,3 +59,10 @@ export const getPDF = fullCashbox => dispatch => {
   console.log(fullCashbox);
   makePdf(fullCashbox);
 };
+
+export const deleteCashbox = (cashboxId, history) => dispatch => {
+  console.log(`DELETE to /api/cashboxes/${cashboxId}`);
+  axios.delete(`/api/cashboxes/${cashboxId}`);
+
+  history.push('/cashboxes');
+};

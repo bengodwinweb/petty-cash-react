@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { MDBJumbotron, MDBBtn, MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 import TransactionList from '../transaction/TransactionList';
 import Box from '../box/Box';
@@ -22,7 +23,8 @@ class CashboxShow extends Component {
       fundTotal,
       currentBox,
       changeBox,
-      transactions
+      transactions,
+      _id
     } = cashbox;
     const fullCashbox = { cashbox, transactions, changeBox };
 
@@ -62,6 +64,9 @@ class CashboxShow extends Component {
                       color="danger"
                       size="small"
                       className="small"
+                      onClick={() =>
+                        this.props.deleteCashbox(_id, this.props.history)
+                      }
                     >
                       Delete
                     </MDBBtn>
@@ -110,4 +115,4 @@ const mapStateToProps = ({ cashboxes }) => {
 export default connect(
   mapStateToProps,
   actions
-)(CashboxShow);
+)(withRouter(CashboxShow));

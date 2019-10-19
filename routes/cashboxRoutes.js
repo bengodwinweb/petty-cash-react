@@ -7,6 +7,7 @@ const Cashbox = mongoose.model('Cashbox');
 const Box = mongoose.model('Box');
 
 module.exports = app => {
+  // Index
   app.get('/api/cashboxes', requireAuth, async (req, res) => {
     const cashboxes = await Cashbox.find({ _user: req.user.id })
       .select({
@@ -17,6 +18,7 @@ module.exports = app => {
     res.send(cashboxes);
   });
 
+  // Create
   app.post('/api/cashboxes', requireAuth, async (req, res) => {
     console.log('post to /api/cashboxes');
     let { companyName, cashboxName, fundTotal = 500 } = req.body;
@@ -55,8 +57,9 @@ module.exports = app => {
     }
   });
 
+  // Read
   app.get('/api/cashboxes/:id', requireAuth, async (req, res) => {
-    console.log(`get to /api/cashboxes/${req.params.id}`);
+    console.log(`DELETE to /api/cashboxes/${req.params.id}`);
 
     const cashbox = await Cashbox.findOne({ _id: req.params.id })
       .populate('transactions')
@@ -64,5 +67,19 @@ module.exports = app => {
       .populate('changeBox');
 
     res.send(cashbox);
+  });
+
+  // Destroy
+  app.delete('/api/cashboxes/:id', requireAuth, async (req, res) => {
+    Cashbox.deleteOne({ _id: req.params.id }, err => {
+      if (err) {
+        console.log("we be errin'");
+        console.log(err);
+        return res.redirect(`/api/cashboxes/${req.params.id}`);
+      }
+    });
+
+    console.log('no error');
+    res.send({});
   });
 };
