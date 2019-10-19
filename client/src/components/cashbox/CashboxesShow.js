@@ -72,13 +72,22 @@ class CashboxShow extends Component {
             <TransactionList />
           </div>
 
-          <div className="row justify-content-between mt-2 mb-3">
+          <div className="row justify-content-between mt-2 mb-2">
             <div className="col-md-6 mb-3">
               <Box box={currentBox} title="Remaining Cash" />
             </div>
             <div className="col-md-6">
               <Box box={changeBox} title="Change" />
             </div>
+          </div>
+
+          <div className="row justify-content-end mb-3 pr-2">
+            <MDBBtn outline color="default" className="">
+              Download Form
+            </MDBBtn>
+            <MDBBtn outline color="warning" className="ml-2">
+              Reset Box
+            </MDBBtn>
           </div>
         </MDBContainer>
       </div>

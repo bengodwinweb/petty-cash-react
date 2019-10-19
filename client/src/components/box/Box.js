@@ -12,9 +12,10 @@ const Box = ({ box, title }) => {
         className="d-flex justify-content-between my-2"
         style={{ fontWeight: '300' }}
       >
-        <div className="col-7 col-sm-8">{BOX_FIELDS[key].string}:</div>
-        <div className="d-flex col-5 col-sm-4">
-          <span className="mr-auto">$</span>
+        <div className="col-4 col-sm-5">{BOX_FIELDS[key].string}:</div>
+        <div className="col-4 d-flex justify-content-center">{box[key]}</div>
+        <div className="d-flex col-4 col-sm-3 justify-content-end">
+          <span className="mr-sm-auto">$</span>
           <span>{(box[key] * BOX_FIELDS[key].value).toFixed(2)}</span>
         </div>
       </div>
