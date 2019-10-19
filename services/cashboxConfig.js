@@ -17,10 +17,7 @@ module.exports.updateCashbox = receivedBox => {
   );
 
   // Increment the changeBox to match the total spent
-  cashbox.changeBox = updateBox(
-    cashbox.changeBox,
-    cashbox.currentSpent.toFixed(2)
-  );
+  cashbox.changeBox = makeChange(cashbox.currentSpent);
 
   return cashbox;
 };

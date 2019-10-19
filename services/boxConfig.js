@@ -138,8 +138,7 @@ const updateBox = (box, idealTotal) => {
 // TODO - fix this so that it balances change in a way that makes sense
 const makeChange = currentSpent => {
   let resultBox = emptyBox;
-
-  incrementBox(resultBox, currentSpent);
+  resultBox = incrementBox(resultBox, currentSpent);
 
   return resultBox;
 };
