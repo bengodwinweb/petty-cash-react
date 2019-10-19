@@ -9,6 +9,7 @@ const Box = mongoose.model('Box');
 module.exports = app => {
   // Index
   app.get('/api/cashboxes', requireAuth, async (req, res) => {
+    console.log('GET to /api/cashboxes');
     const cashboxes = await Cashbox.find({ _user: req.user.id })
       .select({
         transactions: false
@@ -20,7 +21,7 @@ module.exports = app => {
 
   // Create
   app.post('/api/cashboxes', requireAuth, async (req, res) => {
-    console.log('post to /api/cashboxes');
+    console.log('POST to /api/cashboxes');
     let { companyName, cashboxName, fundTotal = 500 } = req.body;
     fundTotal = parseFloat(fundTotal).toFixed(2);
     console.log(fundTotal);
@@ -53,13 +54,14 @@ module.exports = app => {
 
       res.redirect('/api/cashboxes');
     } catch (err) {
+      console.log(err);
       res.status(422).send(err);
     }
   });
 
   // Read
   app.get('/api/cashboxes/:id', requireAuth, async (req, res) => {
-    console.log(`DELETE to /api/cashboxes/${req.params.id}`);
+    console.log(`GET to /api/cashboxes/${req.params.id}`);
 
     const cashbox = await Cashbox.findOne({ _id: req.params.id })
       .populate('transactions')
@@ -71,6 +73,7 @@ module.exports = app => {
 
   // Destroy
   app.delete('/api/cashboxes/:id', requireAuth, async (req, res) => {
+    console.log(`DELETE to /api/cashboxes/${req.params.id}`);
     Cashbox.deleteOne({ _id: req.params.id }, err => {
       if (err) {
         console.log("we be errin'");

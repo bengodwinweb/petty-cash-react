@@ -1,4 +1,4 @@
-const { incrementBox, decrementBox } = require('./boxConfig');
+const { updateBox, makeChange } = require('./boxConfig');
 
 module.exports.updateCashbox = receivedBox => {
   const cashbox = receivedBox;
@@ -11,13 +11,16 @@ module.exports.updateCashbox = receivedBox => {
     .toFixed(2);
 
   // Decrement the currentBox to the current total the transaction amount
-  cashbox.currentBox = decrementBox(
+  cashbox.currentBox = updateBox(
     cashbox.currentBox,
     (cashbox.fundTotal - cashbox.currentSpent).toFixed(2)
   );
 
   // Increment the changeBox to match the total spent
-  cashbox.changeBox = incrementBox(cashbox.changeBox, cashbox.currentSpent);
+  cashbox.changeBox = updateBox(
+    cashbox.changeBox,
+    cashbox.currentSpent.toFixed(2)
+  );
 
   return cashbox;
 };

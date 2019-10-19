@@ -6,11 +6,6 @@ const Cashbox = mongoose.model('Cashbox');
 const Transaction = mongoose.model('Transaction');
 
 module.exports = app => {
-  // Get transactions
-  app.get('/api/cashboxes/:id/transactions', requireAuth, (req, res) => {
-    return res.send({ greeting: `transactions for cashbox ${req.params.id}` });
-  });
-
   // Create transaction
   app.post('/api/cashboxes/:id/transactions', requireAuth, async (req, res) => {
     console.log(`POST to /api/cashboxes/${req.params.id}/transactions`);
@@ -41,5 +36,41 @@ module.exports = app => {
     }
   });
 
-  // Edit Transaction
+  // Remove Transaction
+  app.delete(
+    '/api/cashboxes/:id/transactions/:transactionId',
+    requireAuth,
+    async (req, res) => {
+      console.log(
+        `DELETE to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
+      );
+
+      // Delete transaction
+      await Transaction.deleteOne({ _id: req.params.transactionId }, err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+
+      // Find cashbox
+      let cashbox = await Cashbox.findOne({ _id: req.params.id })
+        .populate('transactions')
+        .populate('currentBox')
+        .populate('changeBox');
+
+      // Update cashbox with new transactions list
+      cashbox = updateCashbox(cashbox);
+
+      try {
+        await cashbox.save();
+        await cashbox.currentBox.save();
+        await cashbox.changeBox.save();
+
+        res.redirect(`/api/cashboxes/${req.params.id}`);
+      } catch {
+        console.log(err);
+        res.status(422).send(err);
+      }
+    }
+  );
 };

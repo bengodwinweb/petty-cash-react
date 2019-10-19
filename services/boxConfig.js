@@ -44,73 +44,87 @@ const sumBox = box => {
     box.dimes * 0.1 +
     box.nickels * 0.05 +
     box.pennies * 0.01;
-  return parseFloat(sum).toFixed(2);
+  return Math.round(sum * 100) / 100;
 };
 
 // Internal
 const decrementBox = (box, idealTotal) => {
-  console.log(`DECREMENT ${sumBox(box)} to ${idealTotal}`);
-  while (sumBox(box) > idealTotal) {
-    while (sumBox(box) - 20 >= idealTotal && box.twenties > 0) {
-      box.twenties--;
+  const resultBox = box;
+  const total = Math.round(Number(idealTotal) * 100) / 100;
+
+  console.log('=================================');
+  console.log(`DECREMENT ${sumBox(resultBox)} to ${total}`);
+
+  if (sumBox(resultBox) > total) {
+    while (sumBox(resultBox) - 20 >= total && resultBox.twenties > 0) {
+      resultBox.twenties--;
     }
-    while (sumBox(box) - 10 >= idealTotal && box.tens > 0) {
-      box.tens--;
+    while (sumBox(resultBox) - 10 >= total && resultBox.tens > 0) {
+      resultBox.tens--;
     }
-    while (sumBox(box) - 5 >= idealTotal && box.fives > 0) {
-      box.fives--;
+    while (sumBox(resultBox) - 5 >= total && resultBox.fives > 0) {
+      resultBox.fives--;
     }
-    while (sumBox(box) - 1 >= idealTotal && box.ones > 0) {
-      box.ones--;
+    while (sumBox(resultBox) - 1 >= total && resultBox.ones > 0) {
+      resultBox.ones--;
     }
-    while (sumBox(box) - 0.25 >= idealTotal && box.quarters > 0) {
-      box.quarters--;
+    while (sumBox(resultBox) - 0.25 >= total && resultBox.quarters > 0) {
+      resultBox.quarters--;
     }
-    while (sumBox(box) - 0.1 >= idealTotal && box.dimes > 0) {
-      box.dimes--;
+    while (sumBox(resultBox) - 0.1 >= total && resultBox.dimes > 0) {
+      resultBox.dimes--;
     }
-    while (sumBox(box) - 0.05 >= idealTotal && box.nickels > 0) {
-      box.nickels--;
+    while (sumBox(resultBox) - 0.05 >= total && resultBox.nickels > 0) {
+      resultBox.nickels--;
     }
-    while (sumBox(box) - 0.01 >= idealTotal && box.pennies > 0) {
-      box.pennies--;
+    while (sumBox(resultBox) - 0.01 >= total && resultBox.pennies > 0) {
+      resultBox.pennies--;
     }
   }
-  box.boxTotal = sumBox(box);
-  return box;
+
+  resultBox.boxTotal = sumBox(resultBox).toFixed(2);
+  console.log(`newTotal = ${resultBox.boxTotal}`);
+  return resultBox;
 };
 
 // Internal
 const incrementBox = (box, idealTotal) => {
-  console.log(`INCREMENT ${sumBox(box)} to ${idealTotal}`);
-  while (sumBox(box) < idealTotal) {
-    while (sumBox(box) <= idealTotal - 20) {
-      box.twenties++;
+  const resultBox = box;
+  const total = Math.round(Number(idealTotal) * 100) / 100;
+
+  console.log('=================================');
+  console.log(`INCREMENT ${sumBox(resultBox)} to ${idealTotal}`);
+
+  if (sumBox(resultBox) < total) {
+    while (sumBox(resultBox) + 20 <= total) {
+      resultBox.twenties++;
     }
-    while (sumBox(box) <= idealTotal - 10) {
-      box.tens++;
+    while (sumBox(resultBox) + 10 <= total) {
+      resultBox.tens++;
     }
-    while (sumBox(box) <= idealTotal - 5) {
-      box.fives++;
+    while (sumBox(resultBox) + 5 <= total) {
+      resultBox.fives++;
     }
-    while (sumBox(box) <= idealTotal - 1) {
-      box.ones++;
+    while (sumBox(resultBox) + 1 <= total) {
+      resultBox.ones++;
     }
-    while (sumBox(box) <= idealTotal - 0.25) {
-      box.quarters++;
+    while (sumBox(resultBox) + 0.25 <= total) {
+      resultBox.quarters++;
     }
-    while (sumBox(box) <= idealTotal - 0.1) {
-      box.dimes++;
+    while (sumBox(resultBox) + 0.1 <= total) {
+      resultBox.dimes++;
     }
-    while (sumBox(box) <= idealTotal - 0.05) {
-      box.nickels++;
+    while (sumBox(resultBox) + 0.05 <= total) {
+      resultBox.nickels++;
     }
-    while (sumBox(box) <= idealTotal - 0.01) {
-      box.pennies++;
+    while (sumBox(resultBox) + 0.01 <= total) {
+      resultBox.pennies++;
     }
   }
-  box.boxTotal = sumBox(box);
-  return box;
+
+  resultBox.boxTotal = sumBox(resultBox).toFixed(2);
+  console.log(`newTotal = ${resultBox.boxTotal}`);
+  return resultBox;
 };
 
 const updateBox = (box, idealTotal) => {
@@ -121,14 +135,11 @@ const updateBox = (box, idealTotal) => {
   return resultBox;
 };
 
-// Get rid of this
-const makeChange = (box, fundTotal) => {
-  const diff = fundTotal - sumBox(box);
+// TODO - fix this so that it balances change in a way that makes sense
+const makeChange = currentSpent => {
   let resultBox = emptyBox;
 
-  if (sumBox(resultBox) < diff) {
-    incrementBox(resultBox, diff);
-  }
+  incrementBox(resultBox, currentSpent);
 
   return resultBox;
 };
@@ -136,5 +147,6 @@ const makeChange = (box, fundTotal) => {
 module.exports = {
   defaultBox,
   emptyBox,
-  updateBox
+  updateBox,
+  makeChange
 };
