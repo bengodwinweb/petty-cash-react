@@ -35,7 +35,7 @@ const Box = ({ box, title }) => {
             <h5>$</h5>
           </span>
           <span>
-            <h5>{box.boxTotal}</h5>
+            <h5>{box.boxTotal.toFixed(2)}</h5>
           </span>
         </div>
       </div>

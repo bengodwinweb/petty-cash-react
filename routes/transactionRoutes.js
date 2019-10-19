@@ -1,41 +1,33 @@
 const mongoose = require('mongoose');
 const requireAuth = require('../middleware/auth/requireAuth');
-// Box helpers
-const { incrementBox, decrementBox } = require('../services/boxConfig');
+const { updateCashbox } = require('../services/cashboxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
 const Transaction = mongoose.model('Transaction');
 
 module.exports = app => {
+  // Get transactions
   app.get('/api/cashboxes/:id/transactions', requireAuth, (req, res) => {
     return res.send({ greeting: `transactions for cashbox ${req.params.id}` });
   });
 
+  // Create transaction
   app.post('/api/cashboxes/:id/transactions', requireAuth, async (req, res) => {
     console.log(`POST to /api/cashboxes/${req.params.id}/transactions`);
 
-    const newTransaction = req.body;
     let cashbox = await Cashbox.findOne({ _id: req.params.id })
       .populate('currentBox')
-      .populate('changeBox');
+      .populate('changeBox')
+      .populate('transactions');
 
-    const transaction = new Transaction(newTransaction);
+    const transaction = new Transaction(req.body);
     transaction._cashbox = cashbox._id;
 
     // Add the transaction to the cashbox
-    cashbox.transactions.push(transaction._id);
+    cashbox.transactions.push(transaction);
 
-    // Increment the currentSpent by the transaction amount
-    cashbox.currentSpent += transaction.amount;
-
-    // Decrement the currentBox to the current total the transaction amount
-    cashbox.currentBox = decrementBox(
-      cashbox.currentBox,
-      (cashbox.fundTotal - cashbox.currentSpent).toFixed(2)
-    );
-
-    // Increment the changeBox by the transaction amount
-    cashbox.changeBox = incrementBox(cashbox.changeBox, cashbox.currentSpent);
+    // Update cashbox
+    cashbox = updateCashbox(cashbox);
 
     try {
       transaction.save();
@@ -48,4 +40,6 @@ module.exports = app => {
       res.status(422).send(err);
     }
   });
+
+  // Edit Transaction
 };

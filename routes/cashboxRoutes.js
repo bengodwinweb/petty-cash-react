@@ -1,12 +1,7 @@
 const requireAuth = require('../middleware/auth/requireAuth');
 const mongoose = require('mongoose');
-// Box helpers
-const {
-  defaultBox,
-  incrementBox,
-  decrementBox,
-  makeChange
-} = require('../services/boxConfig');
+
+const { defaultBox, emptyBox, updateBox } = require('../services/boxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
 const Box = mongoose.model('Box');
@@ -25,24 +20,22 @@ module.exports = app => {
   app.post('/api/cashboxes', requireAuth, async (req, res) => {
     console.log('post to /api/cashboxes');
     let { companyName, cashboxName, fundTotal = 500 } = req.body;
-    fundTotal = parseInt(fundTotal).toFixed(2);
+    fundTotal = parseFloat(fundTotal).toFixed(2);
+    console.log(fundTotal);
 
     let currentBox = new Box(defaultBox);
 
     // Increment or decrement the values in currentBox so that
     // currentBox.boxTotal === fundTotal
-    decrementBox(currentBox, fundTotal);
-    incrementBox(currentBox, fundTotal);
+    currentBox = updateBox(currentBox, fundTotal);
 
-    // TODO - change to new Box(emptyBox) after
-    // creating update and post transaction routes
     // Init changeBox -- inital values of 0
-    const changeBox = new Box(makeChange(currentBox, fundTotal));
+    const changeBox = new Box(emptyBox);
 
     const cashbox = new Cashbox({
       companyName,
       cashboxName,
-      fundTotal: parseFloat(fundTotal).toFixed(2),
+      fundTotal,
       _user: req.user.id,
       currentBox,
       changeBox

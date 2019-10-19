@@ -42,10 +42,10 @@ class CashboxShow extends Component {
                     {cashboxName}
                   </h2>
                   <p className="my-2 lead" style={{ fontWeight: '200' }}>
-                    Fund Total: ${fundTotal}
+                    Fund Total: ${fundTotal.toFixed(2)}
                   </p>
                   <p className="lead" style={{ fontWeight: '200' }}>
-                    Remaining: ${currentBox.boxTotal}
+                    Remaining: ${currentBox.boxTotal.toFixed(2)}
                   </p>
                   <hr className="my-2" />
                   <div className="mt-4 mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-start">
