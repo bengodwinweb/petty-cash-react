@@ -6,6 +6,8 @@ import * as actions from '../../actions';
 import TransactionList from '../transaction/TransactionList';
 import Box from '../box/Box';
 
+// TODO - Cashbox Edit, Download Form, Reset
+
 class CashboxShow extends Component {
   componentDidMount() {
     const { cashboxId } = this.props.match.params;
@@ -70,8 +72,13 @@ class CashboxShow extends Component {
             <TransactionList />
           </div>
 
-          <div className="my-4">
-            <Box box={currentBox} />
+          <div className="row justify-content-between mt-2 mb-3">
+            <div className="col-md-6 mb-3">
+              <Box box={currentBox} title="Remaining Cash" />
+            </div>
+            <div className="col-md-6">
+              <Box box={changeBox} title="Change" />
+            </div>
           </div>
         </MDBContainer>
       </div>
