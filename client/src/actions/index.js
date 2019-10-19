@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FETCH_USER, FETCH_CASHBOX_LIST, FETCH_CASHBOX } from './types';
+import makePdf from '../utils/makePdf';
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/users/current_user');
@@ -51,4 +52,9 @@ export const submitTransaction = (
   );
 
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
+};
+
+export const getPDF = fullCashbox => dispatch => {
+  console.log(fullCashbox);
+  makePdf(fullCashbox);
 };

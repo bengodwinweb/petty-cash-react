@@ -15,13 +15,16 @@ class CashboxShow extends Component {
   }
 
   render() {
+    const cashbox = this.props.cashboxes;
     const {
       cashboxName,
       companyName,
       fundTotal,
       currentBox,
-      changeBox
-    } = this.props.cashboxes;
+      changeBox,
+      transactions
+    } = cashbox;
+    const fullCashbox = { cashbox, transactions, changeBox };
 
     if (!currentBox) {
       return <div>Loading</div>;
@@ -82,7 +85,12 @@ class CashboxShow extends Component {
           </div>
 
           <div className="row justify-content-end mb-3 pr-2">
-            <MDBBtn outline color="default" className="">
+            <MDBBtn
+              outline
+              color="default"
+              className=""
+              onClick={() => this.props.getPDF(fullCashbox)}
+            >
               Download Form
             </MDBBtn>
             <MDBBtn outline color="warning" className="ml-2">
