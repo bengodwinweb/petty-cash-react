@@ -76,22 +76,19 @@ class TransactionList extends Component {
   }
 
   renderForm() {
-    console.log(transactionFields);
     return (
       <MDBCard className="p-4 my-4" key="transactionForm">
         <Form
           FIELDS={transactionFields}
           onCancel={this.toggleForm}
-          onTransactionSubmit={
-            (values => {
-              return this.props.submitTransaction(
-                values,
-                this.props.cashboxes._id,
-                this.props.history
-              );
-            },
-            this.toggleForm)
-          }
+          onTransactionSubmit={values => {
+            this.props.submitTransaction(
+              values,
+              this.props.cashboxes._id,
+              this.props.history
+            );
+            this.toggleForm();
+          }}
         />
       </MDBCard>
     );

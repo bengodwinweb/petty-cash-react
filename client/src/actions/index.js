@@ -46,6 +46,7 @@ export const submitTransaction = (
   cashboxId,
   history
 ) => async dispatch => {
+  console.log(`POSTING to /api/cashboxes/${cashboxId}/transactions`);
   const res = await axios.post(
     `/api/cashboxes/${cashboxId}/transactions`,
     values

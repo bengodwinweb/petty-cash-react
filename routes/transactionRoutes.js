@@ -1,16 +1,10 @@
 const mongoose = require('mongoose');
 const requireAuth = require('../middleware/auth/requireAuth');
 // Box helpers
-const {
-  defaultBox,
-  incrementBox,
-  decrementBox,
-  makeChange
-} = require('../services/boxConfig');
+const { incrementBox, decrementBox } = require('../services/boxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
 const Transaction = mongoose.model('Transaction');
-const Box = mongoose.model('Box');
 
 module.exports = app => {
   app.get('/api/cashboxes/:id/transactions', requireAuth, (req, res) => {
@@ -37,7 +31,7 @@ module.exports = app => {
     // Decrement the currentBox to the current total the transaction amount
     cashbox.currentBox = decrementBox(
       cashbox.currentBox,
-      cashbox.fundTotal - cashbox.currentSpent
+      (cashbox.fundTotal - cashbox.currentSpent).toFixed(2)
     );
 
     // Increment the changeBox by the transaction amount
