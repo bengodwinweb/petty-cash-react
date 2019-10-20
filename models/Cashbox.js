@@ -37,6 +37,10 @@ const CashboxSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Box'
   },
+  idealBox: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Box'
+  },
   _user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'

@@ -1,7 +1,6 @@
 const { updateBox, makeChange } = require('./boxConfig');
 
-module.exports.updateCashbox = receivedBox => {
-  const cashbox = receivedBox;
+module.exports.updateCashbox = async cashbox => {
   console.log(`updatebox - ${cashbox._id}`);
 
   // Update currentSpent to match total of transaction amounts
@@ -20,8 +19,15 @@ module.exports.updateCashbox = receivedBox => {
     (cashbox.fundTotal - cashbox.currentSpent).toFixed(2)
   );
 
-  // Increment the changeBox to match the total spent
-  cashbox.changeBox = makeChange(cashbox.currentSpent);
+  cashbox.changeBox = makeChange(cashbox);
 
-  return cashbox;
+  try {
+    await cashbox.currentBox.save();
+    await cashbox.changeBox.save();
+    await cashbox.save();
+
+    return cashbox;
+  } catch (err) {
+    console.log(err);
+  }
 };

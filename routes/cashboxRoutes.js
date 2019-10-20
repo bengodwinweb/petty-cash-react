@@ -27,11 +27,14 @@ router.post('/', requireAuth, async (req, res) => {
   fundTotal = parseFloat(fundTotal).toFixed(2);
   console.log(fundTotal);
 
-  let currentBox = new Box(defaultBox);
+  // Init currentBox and idealBox
+  let currentBox = new Box(_.clone(defaultBox));
+  let idealBox = new Box(_.clone(defaultBox));
 
-  // Increment or decrement the values in currentBox so that
-  // currentBox.boxTotal === fundTotal
+  // Increment or decrement the values in currentBox and
+  // idealBox so that currentBox.boxTotal === fundTotal
   currentBox = updateBox(currentBox, fundTotal);
+  idealBox = updateBox(idealBox, fundTotal);
 
   // Init changeBox -- inital values of 0
   const changeBox = new Box(_.clone(emptyBox));
@@ -42,16 +45,19 @@ router.post('/', requireAuth, async (req, res) => {
     fundTotal,
     _user: req.user.id,
     currentBox,
-    changeBox
+    changeBox,
+    idealBox
   });
 
   cashbox.currentBox._cashbox = cashbox._id;
   cashbox.changeBox._cashbox = cashbox._id;
+  cashbox.idealBox._cashbox = cashbox._id;
 
   try {
     await cashbox.save();
     await currentBox.save();
     await changeBox.save();
+    await idealBox.save();
 
     res.redirect('/api/cashboxes');
   } catch (err) {
@@ -67,7 +73,8 @@ router.get('/:id', requireAuth, async (req, res) => {
   const cashbox = await Cashbox.findOne({ _id: req.params.id })
     .populate('transactions')
     .populate('currentBox')
-    .populate('changeBox');
+    .populate('changeBox')
+    .populate('idealBox');
 
   res.send(cashbox);
 });

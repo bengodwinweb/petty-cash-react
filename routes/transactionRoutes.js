@@ -22,19 +22,17 @@ router.post('/', requireAuth, async (req, res) => {
   // Add the transaction to the cashbox
   cashbox.transactions.push(transaction);
 
-  // Update cashbox
-  cashbox = updateCashbox(cashbox);
-
   try {
     transaction.save();
-    cashbox.changeBox.save();
-    cashbox.currentBox.save();
-    cashbox.save();
+    cashbox = await cashbox.save();
 
-    res.redirect(`/api/cashboxes/${req.params.id}`);
+    // Update cashbox
+    updateCashbox(cashbox);
   } catch (err) {
     res.status(422).send(err);
   }
+
+  res.redirect(`/api/cashboxes/${req.params.id}`);
 });
 
 // Remove Transaction
@@ -54,22 +52,19 @@ router.delete('/:transactionId', requireAuth, async (req, res) => {
   let cashbox = await Cashbox.findOne({ _id: req.params.id })
     .populate('transactions')
     .populate('currentBox')
-    .populate('changeBox');
-
-  // Update cashbox with new transactions list
-  cashbox = updateCashbox(cashbox);
+    .populate('changeBox')
+    .populate('idealBox');
 
   try {
-    await cashbox.save();
-    await cashbox.currentBox.save();
-    await cashbox.changeBox.save();
+    cashbox = await cashbox.save();
 
-    res.send(cashbox);
-    // res.redirect(`/api/cashboxes/${req.params.id}`);
+    // Update cashbox
+    updateCashbox(cashbox);
   } catch (err) {
-    console.log(err);
     res.status(422).send(err);
   }
+
+  res.send(cashbox);
 });
 
 module.exports = router;
