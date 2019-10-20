@@ -1,9 +1,9 @@
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
-const path = require('path');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Cashbox');
@@ -36,11 +36,13 @@ mongoose
   .catch(err => console.log(err));
 
 // App Setup
-require('./routes/index')(app);
-require('./routes/userRoutes')(app);
-require('./routes/cashboxRoutes')(app);
-require('./routes/transactionRoutes')(app);
-require('./routes/pdfRoutes')(app);
+app.use('/api', require('./routes/index'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/cashboxes', require('./routes/cashboxRoutes'));
+app.use(
+  '/api/cashboxes/:id/transactions',
+  require('./routes/transactionRoutes')
+);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

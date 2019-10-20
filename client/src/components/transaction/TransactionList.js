@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBBtn, MDBRow, MDBCardTitle } from 'mdbreact';
+import { MDBCard, MDBBtn, MDBRow, MDBCardTitle, MDBIcon } from 'mdbreact';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -21,6 +21,7 @@ class TransactionList extends Component {
     return this.props.cashboxes.transactions.map(
       ({
         _id,
+        _cashbox,
         paidTo,
         expenseType,
         amount,
@@ -29,9 +30,9 @@ class TransactionList extends Component {
         description = ''
       }) => {
         return (
-          <MDBRow key={_id} className="mb-2">
+          <MDBRow key={_id} className="my-0">
             <div
-              className="d-flex flex-row col-12 align-items-start"
+              className="d-flex flex-row col-12 align-items-center"
               style={{ fontWeight: '300' }}
             >
               <div className="col-5 col-lg-3 col-xl-2 h-auto">
@@ -54,7 +55,7 @@ class TransactionList extends Component {
                 <p className="">{description}</p>
               </div>
               <div
-                className="d-none d-sm-flex ml-auto mr-2"
+                className="d-none d-sm-flex ml-auto mr-2 align-items-center"
                 style={{ fontWeight: '200' }}
               >
                 <Link
@@ -64,9 +65,15 @@ class TransactionList extends Component {
                 >
                   Edit
                 </Link>
-                <Link to="#" className="red-text mr-0">
-                  Delete
-                </Link>
+                <MDBBtn
+                  outline
+                  size="sm"
+                  color="danger"
+                  className="px-2 py-1"
+                  onClick={() => this.props.deleteTransaction(_cashbox, _id)}
+                >
+                  <MDBIcon icon="trash" />
+                </MDBBtn>
               </div>
             </div>
           </MDBRow>

@@ -66,3 +66,17 @@ export const deleteCashbox = (cashboxId, history) => dispatch => {
 
   history.push('/cashboxes');
 };
+
+export const deleteTransaction = (
+  cashboxId,
+  transactionId
+) => async dispatch => {
+  console.log(
+    `DELETE to /api/cashboxes/${cashboxId}/transactions/${transactionId}`
+  );
+  const res = await axios.delete(
+    `/api/cashboxes/${cashboxId}/transactions/${transactionId}`
+  );
+
+  dispatch({ type: FETCH_CASHBOX, payload: res.data });
+};

@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const emptyBox = {
   twenties: 0,
   tens: 0,
@@ -137,7 +139,7 @@ const updateBox = (box, idealTotal) => {
 
 // TODO - fix this so that it balances change in a way that makes sense
 const makeChange = currentSpent => {
-  let resultBox = emptyBox;
+  let resultBox = _.clone(emptyBox);
   resultBox = incrementBox(resultBox, currentSpent);
 
   return resultBox;
