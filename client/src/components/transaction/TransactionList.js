@@ -36,23 +36,23 @@ class TransactionList extends Component {
               style={{ fontWeight: '300' }}
             >
               <div className="col-5 col-lg-3 col-xl-2 h-auto">
-                <p className="h-auto m-0">{paidTo}</p>
+                <p className="m-0">{paidTo}</p>
               </div>
               <div className="col-2 d-none d-xl-inline">
-                <p className="">{expenseType}</p>
+                <p className="m-0">{expenseType}</p>
               </div>
               <div className="col-3 col-lg-2 col-xl-1 mx-auto m-lg-0 d-flex justify-content-between h-auto">
                 <span className="">$</span>
                 <span className="">{amount.toFixed(2)}</span>
               </div>
               <div className="col-2 d-none d-lg-inline">
-                <p className="">{index}</p>
+                <p className="m-0">{index}</p>
               </div>
               <div className="col-1 d-none d-lg-inline">
-                <p className="">{account}</p>
+                <p className="m-0">{account}</p>
               </div>
               <div className="col-2 d-none d-lg-inline">
-                <p className="">{description}</p>
+                <p className="m-0">{description}</p>
               </div>
               <div
                 className="d-none d-sm-flex ml-auto mr-2 align-items-center"
