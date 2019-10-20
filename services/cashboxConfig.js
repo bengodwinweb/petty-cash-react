@@ -5,10 +5,14 @@ module.exports.updateCashbox = receivedBox => {
   console.log(`updatebox - ${cashbox._id}`);
 
   // Update currentSpent to match total of transaction amounts
-  cashbox.currentSpent = cashbox.transactions
-    .map(transaction => transaction.amount)
-    .reduce((acc, val) => acc + val)
-    .toFixed(2);
+  if (cashbox.transactions.length > 0) {
+    cashbox.currentSpent = cashbox.transactions
+      .map(transaction => transaction.amount)
+      .reduce((acc, val) => acc + val)
+      .toFixed(2);
+  } else {
+    cashbox.currentSpent = 0;
+  }
 
   // Decrement the currentBox to the current total the transaction amount
   cashbox.currentBox = updateBox(
