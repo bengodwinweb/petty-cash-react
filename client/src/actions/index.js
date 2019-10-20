@@ -80,3 +80,20 @@ export const deleteTransaction = (
 
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
+
+export const updateTransaction = (
+  values,
+  cashboxId,
+  transactionId
+) => async dispatch => {
+  console.log(
+    `PUTTING to /api/cashboxes/${cashboxId}/transactions/${transactionId}`
+  );
+  console.log(values);
+  const res = await axios.put(
+    `/api/cashboxes/${cashboxId}/transactions/${transactionId}`,
+    values
+  );
+
+  dispatch({ type: FETCH_CASHBOX, payload: res.data });
+};

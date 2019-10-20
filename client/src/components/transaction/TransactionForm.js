@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import transactionFields from './transaction/transactionFields';
-import CustomField from './CustomField';
+import transactionFields from './transactionFields';
+import TransactionField from './TransactionField';
 
 class Form extends Component {
   decrease = () => {
@@ -22,7 +22,14 @@ class Form extends Component {
           type={field.type}
           name={field.name}
           key={field.name}
-          component={CustomField}
+          currentVal={
+            this.props.transaction !== null
+              ? this.props.cashboxes.transactions[this.props.transaction][
+                  field.name
+                ]
+              : ''
+          }
+          component={TransactionField}
           FIELDS={this.props.FIELDS}
         />
       );
@@ -30,6 +37,13 @@ class Form extends Component {
   }
 
   render() {
+    if (this.props.transaction !== null) {
+      console.log(this.props.transaction);
+      console.log(this.props.cashboxes.transactions[this.props.transaction]);
+    } else {
+      console.log('no transaction');
+    }
+
     return (
       <div>
         <MDBContainer className="">

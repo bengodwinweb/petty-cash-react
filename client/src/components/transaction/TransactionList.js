@@ -4,106 +4,130 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import transactionFields from './transactionFields';
-import Form from '../Form';
+import TransactionForm from './TransactionForm';
 import * as actions from '../../actions';
 
 // TODO - Transaction Edit
 
 class TransactionList extends Component {
   state = {
-    showForm: false
+    showForm: false,
+    transactionIndex: null
+  };
+
+  setTransactionIndex(index) {
+    this.setState({ transactionIndex: index });
+  }
+
+  clearTransactionIndex() {
+    this.setState({ transactionIndex: null });
+  }
+
+  showForm = () => {
+    this.setState({ showForm: true });
+  };
+
+  hideForm = () => {
+    this.setState({ showForm: false });
   };
 
   renderList() {
     if (!this.props.cashboxes.transactions) {
       return <div>Loading...</div>;
     }
-    return this.props.cashboxes.transactions.map(
-      ({
-        _id,
-        _cashbox,
-        paidTo,
-        expenseType,
-        amount,
-        index,
-        account,
-        description = ''
-      }) => {
-        return (
-          <MDBRow key={_id} className="my-0">
-            <div
-              className="d-flex flex-row col-12 align-items-center"
-              style={{ fontWeight: '300' }}
-            >
-              <div className="col-5 col-lg-3 col-xl-2 h-auto">
-                <p className="m-0">{paidTo}</p>
-              </div>
-              <div className="col-2 d-none d-xl-inline">
-                <p className="m-0">{expenseType}</p>
-              </div>
-              <div className="col-3 col-lg-2 col-xl-1 mx-auto m-lg-0 d-flex justify-content-between h-auto">
-                <span className="">$</span>
-                <span className="">{amount.toFixed(2)}</span>
-              </div>
-              <div className="col-2 d-none d-lg-inline">
-                <p className="m-0">{index}</p>
-              </div>
-              <div className="col-1 d-none d-lg-inline">
-                <p className="m-0">{account}</p>
-              </div>
-              <div className="col-2 d-none d-lg-inline">
-                <p className="m-0">{description}</p>
-              </div>
-              <div
-                className="d-none d-sm-flex ml-auto mr-2 align-items-center"
-                style={{ fontWeight: '200' }}
-              >
-                <Link
-                  to="#"
-                  className="mr-3"
-                  style={{ color: 'rgb(40, 175, 157)' }}
-                >
-                  Edit
-                </Link>
-                <MDBBtn
-                  outline
-                  size="sm"
-                  color="danger"
-                  className="px-2 py-1"
-                  onClick={() => this.props.deleteTransaction(_cashbox, _id)}
-                >
-                  <MDBIcon icon="trash" />
-                </MDBBtn>
-              </div>
+    let transactionsArray = [];
+    this.props.cashboxes.transactions.forEach((transaction, index) => {
+      transactionsArray.push(
+        <MDBRow key={transaction._id} className="my-0">
+          <div
+            className="d-flex flex-row col-12 align-items-center"
+            style={{ fontWeight: '300' }}
+          >
+            <div className="col-5 col-lg-3 col-xl-2 h-auto">
+              <p className="m-0">{transaction.paidTo}</p>
             </div>
-          </MDBRow>
-        );
-      }
-    );
+            <div className="col-2 d-none d-xl-inline">
+              <p className="m-0">{transaction.expenseType}</p>
+            </div>
+            <div className="col-3 col-lg-2 col-xl-1 mx-auto m-lg-0 d-flex justify-content-between h-auto">
+              <span className="">$</span>
+              <span className="">{transaction.amount.toFixed(2)}</span>
+            </div>
+            <div className="col-2 d-none d-lg-inline">
+              <p className="m-0">{transaction.index}</p>
+            </div>
+            <div className="col-1 d-none d-lg-inline">
+              <p className="m-0">{transaction.account}</p>
+            </div>
+            <div className="col-2 d-none d-lg-inline">
+              <p className="m-0">{transaction.description}</p>
+            </div>
+            <div
+              className="d-none d-sm-flex ml-auto mr-2 align-items-center"
+              style={{ fontWeight: '200' }}
+            >
+              <Link
+                to="#"
+                className="mr-3"
+                style={{ color: 'rgb(40, 175, 157)' }}
+                onClick={() => {
+                  this.setTransactionIndex(index);
+                  this.showForm();
+                }}
+              >
+                Edit
+              </Link>
+              <MDBBtn
+                outline
+                size="sm"
+                color="danger"
+                className="px-2 py-1"
+                onClick={() =>
+                  this.props.deleteTransaction(
+                    transaction._cashbox,
+                    transaction._id
+                  )
+                }
+              >
+                <MDBIcon icon="trash" />
+              </MDBBtn>
+            </div>
+          </div>
+        </MDBRow>
+      );
+    });
+    return transactionsArray;
   }
 
   renderForm() {
     return (
       <MDBCard className="p-4 my-4" key="transactionForm">
-        <Form
+        <TransactionForm
           FIELDS={transactionFields}
-          onCancel={this.toggleForm}
+          onCancel={this.hideForm}
+          transaction={this.state.transactionIndex}
           onTransactionSubmit={values => {
-            this.props.submitTransaction(
-              values,
-              this.props.cashboxes._id,
-              this.props.history
-            );
-            this.toggleForm();
+            if (this.state.transactionIndex !== null) {
+              this.props.updateTransaction(
+                values,
+                this.props.cashboxes._id,
+                this.props.cashboxes.transactions[this.state.transactionIndex]
+                  ._id
+              );
+            } else {
+              this.props.submitTransaction(
+                values,
+                this.props.cashboxes._id,
+                this.props.history
+              );
+            }
+            this.hideForm();
+            this.clearTransactionIndex();
           }}
         />
       </MDBCard>
     );
   }
-
-  toggleForm = () => {
-    this.setState({ showForm: !this.state.showForm });
-  };
 
   render() {
     return (
@@ -138,7 +162,10 @@ class TransactionList extends Component {
               outline
               size="sm"
               color="default"
-              onClick={this.toggleForm}
+              onClick={() => {
+                this.showForm();
+                this.clearTransactionIndex();
+              }}
               className="mr-0"
             >
               Add New
