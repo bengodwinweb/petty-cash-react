@@ -12,15 +12,35 @@ import * as actions from '../../actions';
 class TransactionList extends Component {
   state = {
     showForm: false,
-    transactionIndex: null
+    transaction: {
+      paidTo: null,
+      expenseType: null,
+      amount: null,
+      index: null,
+      description: null,
+      _id: null
+    }
   };
 
-  setTransactionIndex(index) {
-    this.setState({ transactionIndex: index });
+  componentDidMount() {
+    console.log(this.state.transaction);
   }
 
-  clearTransactionIndex() {
-    this.setState({ transactionIndex: null });
+  setTransaction(index) {
+    const transaction = this.props.cashboxes.transactions[index];
+    this.setState({ transaction });
+  }
+
+  clearTransaction() {
+    const transaction = {
+      paidTo: null,
+      expenseType: null,
+      amount: null,
+      index: null,
+      description: null,
+      _id: null
+    };
+    this.setState({ transaction });
   }
 
   showForm = () => {
@@ -71,7 +91,7 @@ class TransactionList extends Component {
                 className="mr-3"
                 style={{ color: 'rgb(40, 175, 157)' }}
                 onClick={() => {
-                  this.setTransactionIndex(index);
+                  this.setTransaction(index);
                   this.showForm();
                 }}
               >
@@ -105,14 +125,14 @@ class TransactionList extends Component {
         <TransactionForm
           FIELDS={transactionFields}
           onCancel={this.hideForm}
-          transaction={this.state.transactionIndex}
+          transaction={this.state.transaction}
+          initialValues={this.state.transaction}
           onTransactionSubmit={values => {
-            if (this.state.transactionIndex !== null) {
+            if (this.state.transaction._id !== null) {
               this.props.updateTransaction(
                 values,
                 this.props.cashboxes._id,
-                this.props.cashboxes.transactions[this.state.transactionIndex]
-                  ._id
+                this.state.transaction._id
               );
             } else {
               this.props.submitTransaction(
@@ -122,7 +142,7 @@ class TransactionList extends Component {
               );
             }
             this.hideForm();
-            this.clearTransactionIndex();
+            this.clearTransaction();
           }}
         />
       </MDBCard>
@@ -164,7 +184,7 @@ class TransactionList extends Component {
               color="default"
               onClick={() => {
                 this.showForm();
-                this.clearTransactionIndex();
+                this.clearTransaction();
               }}
               className="mr-0"
             >

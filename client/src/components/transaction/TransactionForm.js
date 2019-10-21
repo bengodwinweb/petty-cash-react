@@ -6,6 +6,23 @@ import transactionFields from './transactionFields';
 import TransactionField from './TransactionField';
 
 class Form extends Component {
+  // state = {
+  //   paidTo: 'Singers',
+  //   expenseType: '',
+  //   amount: 0,
+  //   index: '355882',
+  //   account: '7414',
+  //   description: 'pizza'
+  // };
+
+  componentDidMount() {
+    if (this.props.transaction) {
+      console.log(this.props.transaction);
+    } else {
+      console.log('no transaction');
+    }
+  }
+
   decrease = () => {
     this.setState({ value: this.state.value - 1 });
   };
@@ -22,13 +39,6 @@ class Form extends Component {
           type={field.type}
           name={field.name}
           key={field.name}
-          currentVal={
-            this.props.transaction !== null
-              ? this.props.cashboxes.transactions[this.props.transaction][
-                  field.name
-                ]
-              : ''
-          }
           component={TransactionField}
           FIELDS={this.props.FIELDS}
         />
@@ -37,13 +47,6 @@ class Form extends Component {
   }
 
   render() {
-    if (this.props.transaction !== null) {
-      console.log(this.props.transaction);
-      console.log(this.props.cashboxes.transactions[this.props.transaction]);
-    } else {
-      console.log('no transaction');
-    }
-
     return (
       <div>
         <MDBContainer className="">
@@ -100,7 +103,8 @@ Form = connect(mapStateToProps)(Form);
 
 export default reduxForm({
   validate,
-  form: 'transactionForm'
+  form: 'transactionForm',
+  enableReinitialize: true
 })(Form);
 
 // Pass in "form" and pass in to reduxForm
