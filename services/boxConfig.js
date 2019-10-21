@@ -38,25 +38,23 @@ const defaultBox = {
   boxTotal: 500
 };
 
-// Internal
 const _sumBox = box => {
   const sum =
-    box.twenties * 20 +
-    box.tens * 10 +
-    box.fives * 5 +
-    box.ones +
-    box.qrolls * 10 +
-    box.drolls * 5 +
-    box.nrolls * 2 +
-    box.prolls * 0.5 +
-    box.quarters * 0.25 +
-    box.dimes * 0.1 +
-    box.nickels * 0.05 +
-    box.pennies * 0.01;
+    Math.round(box.twenties * 20 * 100) / 100 +
+    Math.round(box.tens * 10 * 100) / 100 +
+    Math.round(box.fives * 5 * 100) / 100 +
+    Math.round(box.ones * 100) / 100 +
+    Math.round(box.qrolls * 10 * 100) / 100 +
+    Math.round(box.drolls * 5 * 100) / 100 +
+    Math.round(box.nrolls * 2 * 100) / 100 +
+    Math.round(box.prolls * 0.5 * 100) / 100 +
+    Math.round(box.quarters * 0.25 * 100) / 100 +
+    Math.round(box.dimes * 0.1 * 100) / 100 +
+    Math.round(box.nickels * 0.05 * 100) / 100 +
+    Math.round(box.pennies * 0.01 * 100) / 100;
   return Math.round(sum * 100) / 100;
 };
 
-// Internal
 const _decrementBox = (box, idealTotal) => {
   const resultBox = box;
   const total = Math.round(Number(idealTotal) * 100) / 100;
@@ -64,30 +62,100 @@ const _decrementBox = (box, idealTotal) => {
   console.log('=================================');
   console.log(`DECREMENT ${_sumBox(resultBox)} to ${total}`);
 
-  if (_sumBox(resultBox) > total) {
+  while (_sumBox(resultBox) > total) {
     while (_sumBox(resultBox) - 20 >= total && resultBox.twenties > 0) {
       resultBox.twenties--;
     }
     while (_sumBox(resultBox) - 10 >= total && resultBox.tens > 0) {
       resultBox.tens--;
+      if (
+        resultBox.tens === 0 &&
+        _sumBox(resultBox) - 10 >= total &&
+        resultBox.twenties > 0
+      ) {
+        resultBox.tens += 2;
+        resultBox.twenties--;
+      }
     }
     while (_sumBox(resultBox) - 5 >= total && resultBox.fives > 0) {
       resultBox.fives--;
+      if (
+        resultBox.fives === 0 &&
+        _sumBox(resultBox) - 5 >= total &&
+        resultBox.tens > 0
+      ) {
+        resultBox.fives += 2;
+        resultBox.tens--;
+      }
     }
     while (_sumBox(resultBox) - 1 >= total && resultBox.ones > 0) {
       resultBox.ones--;
+      if (
+        resultBox.ones === 0 &&
+        _sumBox(resultBox) - 1 >= total &&
+        resultBox.fives > 0
+      ) {
+        resultBox.ones += 5;
+        resultBox.fives--;
+      }
     }
     while (_sumBox(resultBox) - 0.25 >= total && resultBox.quarters > 0) {
       resultBox.quarters--;
+      if (
+        resultBox.quarters === 0 &&
+        _sumBox(resultBox) - 0.25 >= total &&
+        resultBox.ones > 0
+      ) {
+        resultBox.quarters += 4;
+        resultBox.ones--;
+      }
     }
     while (_sumBox(resultBox) - 0.1 >= total && resultBox.dimes > 0) {
       resultBox.dimes--;
+      if (
+        resultBox.dimes === 0 &&
+        _sumBox(resultBox) - 0.1 >= total &&
+        resultBox.quarters > 0
+      ) {
+        resultBox.dimes += 2;
+        resultBox.nickels += 1;
+        resultBox.quarters--;
+      }
     }
     while (_sumBox(resultBox) - 0.05 >= total && resultBox.nickels > 0) {
       resultBox.nickels--;
+      if (
+        resultBox.nickels === 0 &&
+        _sumBox(resultBox) - 0.05 >= total &&
+        resultBox.dimes > 0
+      ) {
+        resultBox.nickels += 2;
+        resultBox.dimes--;
+      }
     }
     while (_sumBox(resultBox) - 0.01 >= total && resultBox.pennies > 0) {
       resultBox.pennies--;
+      if (
+        resultBox.pennies === 0 &&
+        _sumBox(resultBox) - 0.01 >= total &&
+        resultBox.nickels > 0
+      ) {
+        resultBox.pennies += 5;
+        resultBox.nickels--;
+      }
+    }
+
+    // ????
+    if (_sumBox(resultBox) > total) {
+      if (resultBox.twenties > 0) {
+        resultBox.twenties--;
+        resultBox = _incrementBox(resultBox, total);
+      } else {
+        if (resultBox.tens > 0) {
+          resultBox.tens--;
+          resultBox = _incrementBox(resultBox, total);
+        }
+      }
     }
   }
 
@@ -96,7 +164,6 @@ const _decrementBox = (box, idealTotal) => {
   return resultBox;
 };
 
-// Internal
 const _incrementBox = (box, idealTotal) => {
   const resultBox = box;
   const total = Math.round(Number(idealTotal) * 100) / 100;

@@ -39,19 +39,15 @@ router.put('/:transactionId', requireAuth, async (req, res) => {
   console.log(
     `PUT to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
   );
-  console.log(req.body);
 
   let editedTransaction = req.body;
-  console.log(editedTransaction);
 
   try {
     await Transaction.findByIdAndUpdate(
       req.params.transactionId,
       editedTransaction
     );
-    console.log('I think the transaction is now updated');
   } catch (err) {
-    console.log('error updating transaction:');
     console.log(err);
   }
 
@@ -71,7 +67,6 @@ router.put('/:transactionId', requireAuth, async (req, res) => {
     console.log(err);
   }
 
-  console.log('uh oh. transaction routes line 71');
   res.redirect(`/api/cashboxes/${req.params.id}`);
 });
 

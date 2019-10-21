@@ -7,40 +7,38 @@ import transactionFields from './transactionFields';
 import TransactionForm from './TransactionForm';
 import * as actions from '../../actions';
 
-// TODO - Transaction Edit
-
 class TransactionList extends Component {
   state = {
     showForm: false,
+    newTransaction: true,
     transaction: {
       paidTo: null,
       expenseType: null,
       amount: null,
       index: null,
-      description: null,
-      _id: null
+      description: null
     }
   };
 
-  componentDidMount() {
-    console.log(this.state.transaction);
-  }
-
+  // If an "edit" button is clicked this sets the transaction
+  // from that row to this.state.transaction so it will be passed
+  // into the transaction form
   setTransaction(index) {
     const transaction = this.props.cashboxes.transactions[index];
-    this.setState({ transaction });
+    this.setState({ transaction, newTransaction: false });
   }
 
+  // TODO - DRY this up
+  // Resets this.state.transaction to default values
   clearTransaction() {
     const transaction = {
       paidTo: null,
       expenseType: null,
       amount: null,
       index: null,
-      description: null,
-      _id: null
+      description: null
     };
-    this.setState({ transaction });
+    this.setState({ transaction, newTransaction: true });
   }
 
   showForm = () => {
@@ -125,21 +123,12 @@ class TransactionList extends Component {
         <TransactionForm
           FIELDS={transactionFields}
           onCancel={this.hideForm}
-          transaction={this.state.transaction}
           initialValues={this.state.transaction}
           onTransactionSubmit={values => {
-            if (this.state.transaction._id !== null) {
-              this.props.updateTransaction(
-                values,
-                this.props.cashboxes._id,
-                this.state.transaction._id
-              );
+            if (!this.state.newTransaction) {
+              this.props.updateTransaction(values);
             } else {
-              this.props.submitTransaction(
-                values,
-                this.props.cashboxes._id,
-                this.props.history
-              );
+              this.props.submitTransaction(values, this.props.cashboxes._id);
             }
             this.hideForm();
             this.clearTransaction();

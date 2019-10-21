@@ -41,12 +41,8 @@ export const fetchCashbox = cashboxId => async dispatch => {
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
 
-export const submitTransaction = (
-  values,
-  cashboxId,
-  history
-) => async dispatch => {
-  console.log(`POSTING to /api/cashboxes/${cashboxId}/transactions`);
+export const submitTransaction = (values, cashboxId) => async dispatch => {
+  console.log(`POST to /api/cashboxes/${cashboxId}/transactions`);
   const res = await axios.post(
     `/api/cashboxes/${cashboxId}/transactions`,
     values
@@ -56,7 +52,6 @@ export const submitTransaction = (
 };
 
 export const getPDF = fullCashbox => dispatch => {
-  console.log(fullCashbox);
   makePdf(fullCashbox);
 };
 
@@ -81,17 +76,12 @@ export const deleteTransaction = (
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
 
-export const updateTransaction = (
-  values,
-  cashboxId,
-  transactionId
-) => async dispatch => {
+export const updateTransaction = values => async dispatch => {
   console.log(
-    `PUTTING to /api/cashboxes/${cashboxId}/transactions/${transactionId}`
+    `PUT to /api/cashboxes/${values._cashbox}/transactions/${values._id}`
   );
-  console.log(values);
   const res = await axios.put(
-    `/api/cashboxes/${cashboxId}/transactions/${transactionId}`,
+    `/api/cashboxes/${values._cashbox}/transactions/${values._id}`,
     values
   );
 
