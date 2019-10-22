@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const requireAuth = require('../middleware/auth/requireAuth');
+const { updateCashbox } = require('../services/cashboxConfig');
 const { defaultBox, emptyBox, updateBox } = require('../services/boxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
@@ -77,6 +78,41 @@ router.get('/:id', requireAuth, async (req, res) => {
     .populate('idealBox');
 
   res.send(cashbox);
+});
+
+// Update
+router.put('/:id', requireAuth, async (req, res) => {
+  console.log(`PUT to /api/cashboxes/${req.params.id}`);
+
+  try {
+    await Cashbox.findByIdAndUpdate(req.params.id, req.body);
+  } catch (err) {
+    console.log(err);
+  }
+
+  let cashbox = await Cashbox.findOne({ _id: req.params.id })
+    .populate('transactions')
+    .populate('currentBox')
+    .populate('changeBox')
+    .populate('idealBox');
+
+  try {
+    let idealBox = new Box(_.clone(defaultBox));
+    idealBox = updateBox(idealBox, cashbox.fundTotal);
+    cashbox.idealBox = idealBox;
+    cashbox.idealBox._cashbox = cashbox._id;
+
+    cashbox = await updateCashbox(cashbox);
+
+    await cashbox.idealBox.save();
+    await cashbox.save();
+
+    //return res.send(cashbox);
+  } catch (err) {
+    console.log(err);
+  }
+
+  res.redirect(`/api/cashboxes/${req.params.id}`);
 });
 
 // Destroy
