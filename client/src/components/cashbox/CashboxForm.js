@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
 import { reduxForm, Field } from 'redux-form';
 import SurveyField from '../auth/SurveyField';
 import cashboxFields from './cashboxFields';
@@ -34,7 +34,7 @@ class CashboxForm extends Component {
   render() {
     return (
       <div>
-        <MDBContainer className="">
+        <MDBCard className="pt-4 px-4" key="transactionList">
           <MDBRow className="d-flex justify-content-center">
             <MDBCol className="col-lg-8">
               <form
@@ -45,15 +45,28 @@ class CashboxForm extends Component {
                 )}
               >
                 <div className="col-12">{this.renderFields()}</div>
-                <div className="mt-4 d-flex col-12">
-                  <MDBBtn color="primary" type="submit" className="ml-auto">
+                <div className="mt-4 d-flex col-12 mb-4">
+                  <MDBBtn
+                    outline
+                    color="danger"
+                    className="ml-auto"
+                    onClick={this.props.onCancel}
+                  >
+                    Canecl
+                  </MDBBtn>
+                  <MDBBtn
+                    outline
+                    color="default"
+                    type="submit"
+                    className="ml-2"
+                  >
                     Submit
                   </MDBBtn>
                 </div>
               </form>
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
+        </MDBCard>
       </div>
     );
   }

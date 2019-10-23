@@ -6,13 +6,46 @@ import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 import TransactionList from '../transaction/TransactionList';
 import Box from '../box/Box';
+import Message from '../../Message';
+import CashboxForm from './CashboxForm';
 
 // TODO - Cashbox Edit, Download Form, Reset
 
 class CashboxShow extends Component {
+  state = {
+    showEditForm: false
+  };
+
   componentDidMount() {
     const { cashboxId } = this.props.match.params;
     this.props.fetchCashbox(cashboxId);
+  }
+
+  toggleEditForm = () => {
+    this.setState({ showEditForm: !this.state.showEditForm });
+  };
+
+  renderEditForm() {
+    return (
+      <div className="my-4">
+        <CashboxForm
+          initialValues={this.props.cashboxes}
+          onSurveySubmit={values => {
+            this.props.updateCashbox(values);
+            this.toggleEditForm();
+          }}
+          onCancel={this.toggleEditForm}
+        />
+      </div>
+    );
+  }
+
+  renderMessage(type, content) {
+    return (
+      <div className="my-4">
+        <Message type={type} content={content} />
+      </div>
+    );
   }
 
   render() {
@@ -23,6 +56,7 @@ class CashboxShow extends Component {
       fundTotal,
       currentBox,
       changeBox,
+      currentSpent,
       transactions,
       _id
     } = cashbox;
@@ -35,6 +69,21 @@ class CashboxShow extends Component {
     return (
       <div>
         <h2 className="ml-3 pt-2 display-4 pb-2">{companyName}</h2>
+
+        {currentSpent !== changeBox.boxTotal
+          ? this.renderMessage(
+              'danger',
+              'Change total does not match transactions total'
+            )
+          : null}
+
+        {currentBox.boxTotal !== fundTotal - currentSpent
+          ? this.renderMessage(
+              'danger',
+              'Current cash does not match transactions'
+            )
+          : null}
+
         <MDBContainer className="mt-4 p-0">
           <MDBRow className="">
             <MDBCol className="">
@@ -56,7 +105,11 @@ class CashboxShow extends Component {
                         Back
                       </MDBBtn>
                     </Link>
-                    <MDBBtn outline color="default" className="">
+                    <MDBBtn
+                      outline
+                      color="default"
+                      onClick={this.toggleEditForm}
+                    >
                       Edit
                     </MDBBtn>
                     <MDBBtn
@@ -75,6 +128,8 @@ class CashboxShow extends Component {
               </MDBJumbotron>
             </MDBCol>
           </MDBRow>
+
+          {this.state.showEditForm ? this.renderEditForm() : null}
 
           <div className="my-4">
             <TransactionList />

@@ -88,6 +88,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     await Cashbox.findByIdAndUpdate(req.params.id, req.body);
   } catch (err) {
     console.log(err);
+    return res.status(422).send(err);
   }
 
   let cashbox = await Cashbox.findOne({ _id: req.params.id })
@@ -96,23 +97,23 @@ router.put('/:id', requireAuth, async (req, res) => {
     .populate('changeBox')
     .populate('idealBox');
 
-  try {
-    let idealBox = new Box(_.clone(defaultBox));
-    idealBox = updateBox(idealBox, cashbox.fundTotal);
-    cashbox.idealBox = idealBox;
-    cashbox.idealBox._cashbox = cashbox._id;
+  let idealBox = new Box(_.clone(defaultBox));
+  idealBox = updateBox(idealBox, cashbox.fundTotal);
+  cashbox.idealBox = idealBox;
+  cashbox.idealBox._cashbox = cashbox._id;
 
+  try {
     cashbox = await updateCashbox(cashbox);
 
     await cashbox.idealBox.save();
     await cashbox.save();
 
+    return res.send(cashbox);
     //return res.send(cashbox);
   } catch (err) {
     console.log(err);
+    res.status(422).send(err);
   }
-
-  res.redirect(`/api/cashboxes/${req.params.id}`);
 });
 
 // Destroy
