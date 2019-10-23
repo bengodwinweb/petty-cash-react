@@ -4,7 +4,7 @@ import BOX_FIELDS from './boxFields';
 
 // TODO - Box Edit
 
-const Box = ({ box, title }) => {
+const Box = ({ box, title, action }) => {
   const renderValues = () => {
     return Object.keys(BOX_FIELDS).map(key => (
       <div
@@ -40,7 +40,13 @@ const Box = ({ box, title }) => {
         </div>
       </div>
       <div className="d-flex flex-row justify-content-end  mt-0 mb-3">
-        <MDBBtn outline size="sm" color="default" className="mr-0">
+        <MDBBtn
+          outline
+          size="sm"
+          color="default"
+          className="mr-0"
+          onClick={action}
+        >
           Edit
         </MDBBtn>
       </div>

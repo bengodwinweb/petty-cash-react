@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
-import { MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
+import { MDBCardTitle, MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
 import { reduxForm, Field } from 'redux-form';
-import SurveyField from '../auth/SurveyField';
-import cashboxFields from './cashboxFields';
+import BoxField from './BoxField';
+import boxFields from './boxFields';
 
-class CashboxForm extends Component {
-  state = {
-    value: 500
-  };
-
-  decrease = () => {
-    this.setState({ value: this.state.value - 1 });
-  };
-
-  increase = () => {
-    this.setState({ value: this.state.value + 1 });
-  };
+class BoxForm extends Component {
+  renderFieldsArr() {
+    const fieldsArr = Object.keys(boxFields).map(key => {
+      return {
+        label: boxFields[key].string,
+        name: key,
+        type: 'number'
+      };
+    });
+    return fieldsArr;
+  }
 
   renderFields() {
-    return cashboxFields.map(field => {
+    const fieldsArr = this.renderFieldsArr();
+    return fieldsArr.map(field => {
       return (
         <Field
           label={field.label}
           type={field.type}
           name={field.name}
           key={field.name}
-          component={SurveyField}
+          component={BoxField}
         />
       );
     });
@@ -35,19 +35,23 @@ class CashboxForm extends Component {
     return (
       <div>
         <MDBCard className="pt-4 px-4" key="transactionList">
+          <MDBCardTitle className="ml-3 mt-3 mb-4">
+            {this.props.title}
+          </MDBCardTitle>
           <MDBRow className="d-flex justify-content-center">
-            <MDBCol className="col-lg-8">
+            <MDBCol className="">
               <form
                 className=""
                 style={{ flexWrap: 'wrap' }}
                 onSubmit={this.props.handleSubmit(values =>
-                  this.props.onSurveySubmit(values)
+                  this.props.onFormSubmit(values)
                 )}
               >
                 <div className="col-12">{this.renderFields()}</div>
-                <div className="mt-4 d-flex col-12 mb-4">
+                <div className="mt-4 d-flex col-12 mb-4 p-0">
                   <MDBBtn
                     outline
+                    size="sm"
                     color="danger"
                     className="ml-auto"
                     onClick={this.props.onCancel}
@@ -56,6 +60,7 @@ class CashboxForm extends Component {
                   </MDBBtn>
                   <MDBBtn
                     outline
+                    size="sm"
                     color="default"
                     type="submit"
                     className="ml-2"
@@ -72,25 +77,4 @@ class CashboxForm extends Component {
   }
 }
 
-const validate = values => {
-  const errors = {};
-
-  const validateFundTotal = num => {
-    return num < 0 || num > 1000000 ? 'Number out of range' : '';
-  };
-
-  cashboxFields.forEach(({ name }) => {
-    errors.fundTotal = validateFundTotal(values.fundTotal);
-
-    if (!values[name]) {
-      errors[name] = 'This field is required';
-    }
-  });
-
-  return errors;
-};
-
-export default reduxForm({
-  validate,
-  form: 'cashboxForm'
-})(CashboxForm);
+export default reduxForm({ form: 'boxForm' })(BoxForm);

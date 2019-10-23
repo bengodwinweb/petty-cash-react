@@ -8,12 +8,14 @@ import TransactionList from '../transaction/TransactionList';
 import Box from '../box/Box';
 import Message from '../../Message';
 import CashboxForm from './CashboxForm';
+import BoxForm from '../box/BoxForm';
 
 // TODO - Cashbox Edit, Download Form, Reset
 
 class CashboxShow extends Component {
   state = {
-    showEditForm: false
+    showEditForm: false,
+    editCurrentBox: false
   };
 
   componentDidMount() {
@@ -23,6 +25,10 @@ class CashboxShow extends Component {
 
   toggleEditForm = () => {
     this.setState({ showEditForm: !this.state.showEditForm });
+  };
+
+  toggleEditCurrentBox = () => {
+    this.setState({ editCurrentBox: !this.state.editCurrentBox });
   };
 
   renderEditForm() {
@@ -45,6 +51,29 @@ class CashboxShow extends Component {
       <div className="my-4">
         <Message type={type} content={content} />
       </div>
+    );
+  }
+
+  renderCurrentBox() {
+    if (this.state.editCurrentBox) {
+      return (
+        <BoxForm
+          title="Remaining Cash"
+          initialValues={this.props.cashboxes.currentBox}
+          onFormSubmit={values => {
+            // this.props.updateCashbox(values);
+            this.toggleEditCurrentBox();
+          }}
+          onCancel={this.toggleEditCurrentBox}
+        />
+      );
+    }
+    return (
+      <Box
+        box={this.props.cashboxes.currentBox}
+        title="Remaining Cash"
+        action={this.toggleEditCurrentBox}
+      />
     );
   }
 
@@ -136,11 +165,9 @@ class CashboxShow extends Component {
           </div>
 
           <div className="row justify-content-between mt-2 mb-2">
-            <div className="col-md-6 mb-3">
-              <Box box={currentBox} title="Remaining Cash" />
-            </div>
+            <div className="col-md-6 mb-3">{this.renderCurrentBox()}</div>
             <div className="col-md-6">
-              <Box box={changeBox} title="Change" />
+              <Box box={this.props.cashboxes.changeBox} title="Change" />
             </div>
           </div>
 
