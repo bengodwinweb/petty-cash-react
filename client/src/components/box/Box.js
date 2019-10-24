@@ -13,10 +13,18 @@ const Box = ({ box, title, action }) => {
         style={{ fontWeight: '300' }}
       >
         <div className="col-4 col-sm-5">{BOX_FIELDS[key].string}:</div>
-        <div className="col-4 d-flex justify-content-center">{box[key]}</div>
+        <div className="col-4 d-flex justify-content-center">
+          {box[key] > 0 ? box[key] : '-'}
+        </div>
         <div className="d-flex col-4 col-sm-3 justify-content-end">
-          <span className="mr-sm-auto">$</span>
-          <span>{(box[key] * BOX_FIELDS[key].value).toFixed(2)}</span>
+          <span className="mr-sm-auto">
+            {box[key] * BOX_FIELDS[key].value > 0 ? '$' : ''}
+          </span>
+          <span>
+            {box[key] * BOX_FIELDS[key].value > 0
+              ? (box[key] * BOX_FIELDS[key].value).toFixed(2)
+              : '-'}
+          </span>
         </div>
       </div>
     ));

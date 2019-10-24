@@ -7,12 +7,17 @@ import boxFields from './boxFields';
 import sumBox from '../../utils/sumBox';
 
 class BoxForm extends Component {
+  state = {
+    error: null
+  };
+
   renderFieldsArr() {
     const fieldsArr = Object.keys(boxFields).map(key => {
       return {
         label: boxFields[key].string,
         name: key,
-        type: 'number'
+        type: 'number',
+        multiplier: boxFields[key].value
       };
     });
     return fieldsArr;
@@ -24,10 +29,11 @@ class BoxForm extends Component {
       return (
         <Field
           label={field.label}
-          type={field.type}
           name={field.name}
           key={field.name}
           component={BoxField}
+          currentVal={this.props.values[field.name]}
+          multiplier={field.multiplier}
         />
       );
     });
@@ -83,6 +89,7 @@ class BoxForm extends Component {
                     Submit
                   </MDBBtn>
                 </div>
+                <div></div>
               </form>
             </MDBCol>
           </MDBRow>
