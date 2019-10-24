@@ -14,8 +14,9 @@ export default ({ input, label, type, meta: { error, touched } }) => {
           className="form-control form-control-sm"
           style={{
             textAlign: 'center',
-            width: '50px',
-            fontWeight: '300'
+            width: '48px',
+            fontWeight: '300',
+            height: '25px'
           }}
         />
       </div>

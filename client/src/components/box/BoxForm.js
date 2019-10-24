@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { MDBCardTitle, MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
 import BoxField from './BoxField';
 import boxFields from './boxFields';
+import sumBox from '../../utils/sumBox';
 
 class BoxForm extends Component {
   renderFieldsArr() {
@@ -48,7 +50,20 @@ class BoxForm extends Component {
                 )}
               >
                 <div className="col-12">{this.renderFields()}</div>
-                <div className="mt-4 d-flex col-12 mb-4 p-0">
+                <div className="my-1 d-flex justify-content-between">
+                  <div className="col-7 col-sm-8">
+                    <h5>Total</h5>
+                  </div>
+                  <div className="d-flex col-5 col-sm-4">
+                    <span className="mr-auto">
+                      <h5>$</h5>
+                    </span>
+                    <span>
+                      <h5>{sumBox(this.props.values).toFixed(2)}</h5>
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-0 d-flex col-12 mb-4 p-0">
                   <MDBBtn
                     outline
                     size="sm"
@@ -76,5 +91,14 @@ class BoxForm extends Component {
     );
   }
 }
+
+const selector = formValueSelector('boxForm');
+const fields = Object.keys(boxFields);
+
+// use connect to map form values to props
+BoxForm = connect(state => {
+  const values = selector(state, ...fields);
+  return { values };
+})(BoxForm);
 
 export default reduxForm({ form: 'boxForm' })(BoxForm);
