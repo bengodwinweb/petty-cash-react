@@ -5,11 +5,28 @@ import { reduxForm, Field, formValueSelector } from 'redux-form';
 import BoxField from './BoxField';
 import boxFields from './boxFields';
 import sumBox from '../../utils/sumBox';
+import Message from '../Message';
 
 class BoxForm extends Component {
   state = {
     error: null
   };
+
+  validate(values) {
+    if (sumBox(values) !== this.props.boxTotal) {
+      return false;
+    }
+    return true;
+  }
+
+  renderErrorMessage() {
+    return (
+      <Message
+        type="warning"
+        content={`Total must equal ${this.props.boxTotal}`}
+      />
+    );
+  }
 
   renderFieldsArr() {
     const fieldsArr = Object.keys(boxFields).map(key => {
@@ -40,20 +57,22 @@ class BoxForm extends Component {
   }
 
   render() {
+    const isEnabled = this.validate(this.props.values);
     return (
       <div>
         <MDBCard className="pt-4 px-4" key="transactionList">
           <MDBCardTitle className="ml-3 mt-3 mb-4">
             {this.props.title}
           </MDBCardTitle>
+          {isEnabled ? null : this.renderErrorMessage()}
           <MDBRow className="d-flex justify-content-center">
             <MDBCol className="">
               <form
                 className=""
                 style={{ flexWrap: 'wrap' }}
-                onSubmit={this.props.handleSubmit(values =>
-                  this.props.onFormSubmit(values)
-                )}
+                onSubmit={this.props.handleSubmit(values => {
+                  this.props.onFormSubmit(values);
+                })}
               >
                 <div className="col-12">{this.renderFields()}</div>
                 <div className="my-1 d-flex justify-content-between">
@@ -85,6 +104,7 @@ class BoxForm extends Component {
                     color="default"
                     type="submit"
                     className="ml-2"
+                    disabled={!isEnabled}
                   >
                     Submit
                   </MDBBtn>
@@ -105,7 +125,7 @@ const fields = Object.keys(boxFields);
 // use connect to map form values to props
 BoxForm = connect(state => {
   const values = selector(state, ...fields);
-  return { values };
+  return { values, ...state };
 })(BoxForm);
 
 export default reduxForm({ form: 'boxForm' })(BoxForm);

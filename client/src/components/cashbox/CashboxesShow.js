@@ -65,6 +65,7 @@ class CashboxShow extends Component {
         <BoxForm
           title="Remaining Cash"
           initialValues={this.props.cashboxes.currentBox}
+          boxTotal={this.props.cashboxes.currentBox.boxTotal}
           onFormSubmit={values => {
             // this.props.updateCashbox(values);
             this.toggleEditCurrentBox();
@@ -88,6 +89,7 @@ class CashboxShow extends Component {
         <BoxForm
           title="Change"
           initialValues={this.props.cashboxes.changeBox}
+          boxTotal={this.props.cashboxes.changeBox.boxTotal}
           onFormSubmit={values => {
             console.log(this.props.cashboxes.changeBox._id);
             this.toggleEditChangeBox();

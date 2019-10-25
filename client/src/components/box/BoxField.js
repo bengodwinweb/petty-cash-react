@@ -21,6 +21,7 @@ export default ({
             {...input}
             type="number"
             step=".5"
+            min="0"
             className="form-control form-control-sm"
             style={{
               textAlign: 'center',
