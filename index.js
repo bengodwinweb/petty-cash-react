@@ -39,6 +39,7 @@ mongoose
 app.use('/api', require('./routes/index'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/cashboxes', require('./routes/cashboxRoutes'));
+app.use('/api/cashboxes/:id/box', require('./routes/boxRoutes'));
 app.use(
   '/api/cashboxes/:id/transactions',
   require('./routes/transactionRoutes')
