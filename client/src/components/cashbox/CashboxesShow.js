@@ -67,7 +67,8 @@ class CashboxShow extends Component {
           initialValues={this.props.cashboxes.currentBox}
           boxTotal={this.props.cashboxes.currentBox.boxTotal}
           onFormSubmit={values => {
-            // this.props.updateCashbox(values);
+            const type = 'currentBox';
+            this.props.updateBox(values, type);
             this.toggleEditCurrentBox();
           }}
           onCancel={this.toggleEditCurrentBox}
@@ -91,7 +92,8 @@ class CashboxShow extends Component {
           initialValues={this.props.cashboxes.changeBox}
           boxTotal={this.props.cashboxes.changeBox.boxTotal}
           onFormSubmit={values => {
-            console.log(this.props.cashboxes.changeBox._id);
+            const type = 'changeBox';
+            this.props.updateBox(values, type);
             this.toggleEditChangeBox();
           }}
           onCancel={this.toggleEditChangeBox}
