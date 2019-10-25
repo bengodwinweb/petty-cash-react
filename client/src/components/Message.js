@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBContainer, MDBAlert } from 'mdbreact';
+import { MDBAlert } from 'mdbreact';
 
 const Message = ({ type, content }) => {
   return (

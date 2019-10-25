@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 import TransactionList from '../transaction/TransactionList';
 import Box from '../box/Box';
-import Message from '../../Message';
+import Message from '../Message';
 import CashboxForm from './CashboxForm';
 import BoxForm from '../box/BoxForm';
 
@@ -15,7 +15,8 @@ import BoxForm from '../box/BoxForm';
 class CashboxShow extends Component {
   state = {
     showEditForm: false,
-    editCurrentBox: false
+    editCurrentBox: false,
+    editChangeBox: false
   };
 
   componentDidMount() {
@@ -29,6 +30,10 @@ class CashboxShow extends Component {
 
   toggleEditCurrentBox = () => {
     this.setState({ editCurrentBox: !this.state.editCurrentBox });
+  };
+
+  toggleEditChangeBox = () => {
+    this.setState({ editChangeBox: !this.state.editChangeBox });
   };
 
   renderEditForm() {
@@ -77,6 +82,29 @@ class CashboxShow extends Component {
     );
   }
 
+  renderChangeBox() {
+    if (this.state.editChangeBox) {
+      return (
+        <BoxForm
+          title="Change"
+          initialValues={this.props.cashboxes.changeBox}
+          onFormSubmit={values => {
+            console.log(this.props.cashboxes.changeBox._id);
+            this.toggleEditChangeBox();
+          }}
+          onCancel={this.toggleEditChangeBox}
+        />
+      );
+    }
+    return (
+      <Box
+        box={this.props.cashboxes.changeBox}
+        title="Change"
+        action={this.toggleEditChangeBox}
+      />
+    );
+  }
+
   render() {
     const cashbox = this.props.cashboxes;
     const {
@@ -102,15 +130,12 @@ class CashboxShow extends Component {
         {currentSpent !== changeBox.boxTotal
           ? this.renderMessage(
               'danger',
-              'Change total does not match transactions total'
+              'Change does not match transactions total'
             )
           : null}
 
         {currentBox.boxTotal !== fundTotal - currentSpent
-          ? this.renderMessage(
-              'danger',
-              'Current cash does not match transactions'
-            )
+          ? this.renderMessage('danger', 'Incorrect amount of remaining cash')
           : null}
 
         <MDBContainer className="mt-4 p-0">
@@ -166,9 +191,7 @@ class CashboxShow extends Component {
 
           <div className="row justify-content-between mt-2 mb-2">
             <div className="col-md-6 mb-3">{this.renderCurrentBox()}</div>
-            <div className="col-md-6">
-              <Box box={this.props.cashboxes.changeBox} title="Change" />
-            </div>
+            <div className="col-md-6">{this.renderChangeBox()}</div>
           </div>
 
           <div className="row justify-content-end mb-3 pr-2">
