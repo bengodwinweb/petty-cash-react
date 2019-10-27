@@ -121,10 +121,8 @@ router.get('/:id/reset', requireAuth, async (req, res) => {
     .populate('currentBox')
     .populate('changeBox')
     .populate('transactions');
-  console.log(cashbox);
 
   cashbox = resetCashbox(cashbox);
-  console.log(cashbox);
 
   try {
     await cashbox.currentBox.save();

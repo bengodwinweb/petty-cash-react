@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
-const {
-  updateBox,
-  makeChange,
-  resetCurrent,
-  resetChange
-} = require('./boxConfig');
+const { updateBox, makeChange, resetCurrent } = require('./boxConfig');
 
 const Transaction = mongoose.model('Transaction');
 
@@ -54,7 +49,6 @@ module.exports.resetCashbox = inputCashbox => {
   cashbox.currentSpent = 0;
 
   cashbox = resetCurrent(cashbox);
-  console.log(cashbox);
 
   return cashbox;
 };

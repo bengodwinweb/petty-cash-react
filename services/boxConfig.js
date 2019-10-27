@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 // objects - emptyBox, defaultBox
 // internal functions - _sumBox(), _decrementBox(), _incrementBox()
-// exposed functions - updateBox(), makeChange()
+// exposed functions - updateBox(), makeChange(), resetCurrent()
 
 const emptyBox = {
   twenties: 0,
@@ -232,7 +232,6 @@ const resetCurrent = inputBox => {
   let cashbox = inputBox;
 
   Object.keys(emptyBox).forEach(key => {
-    console.log(`${cashbox.currentBox[key]} + ${cashbox.changeBox[key]}`);
     cashbox.currentBox[key] += cashbox.changeBox[key];
     cashbox.changeBox[key] = 0;
   });
@@ -243,26 +242,10 @@ const resetCurrent = inputBox => {
   return cashbox;
 };
 
-const resetChange = box => {
-  let resetBox = box;
-  console.log(resetBox);
-
-  Object.keys(emptyBox).forEach(key => {
-    resetBox[key] = 0;
-  });
-
-  resetBox.boxTotal = 0;
-
-  console.log(resetBox);
-
-  return resetBox;
-};
-
 module.exports = {
   defaultBox,
   emptyBox,
   updateBox,
   makeChange,
-  resetCurrent,
-  resetChange
+  resetCurrent
 };
