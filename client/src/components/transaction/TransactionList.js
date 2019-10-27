@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { MDBCard, MDBBtn, MDBRow, MDBCardTitle, MDBIcon } from 'mdbreact';
+import {
+  MDBCard,
+  MDBBtn,
+  MDBRow,
+  MDBCardTitle,
+  MDBIcon,
+  MDBModal,
+  MDBModalHeader
+} from 'mdbreact';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -47,6 +55,10 @@ class TransactionList extends Component {
 
   hideForm = () => {
     this.setState({ showForm: false });
+  };
+
+  toggleForm = () => {
+    this.setState({ showForm: !this.state.showForm });
   };
 
   renderList() {
@@ -119,22 +131,36 @@ class TransactionList extends Component {
 
   renderForm() {
     return (
-      <MDBCard className="p-4 my-4" key="transactionForm">
-        <TransactionForm
-          FIELDS={transactionFields}
-          onCancel={this.hideForm}
-          initialValues={this.state.transaction}
-          onTransactionSubmit={values => {
-            if (!this.state.newTransaction) {
-              this.props.updateTransaction(values);
-            } else {
-              this.props.submitTransaction(values, this.props.cashboxes._id);
-            }
-            this.hideForm();
-            this.clearTransaction();
-          }}
-        />
-      </MDBCard>
+      <div>
+        <MDBModal
+          isOpen={this.state.showForm}
+          toggle={this.toggleForm}
+          centered
+        >
+          <MDBModalHeader toggle={this.toggleForm} className="pl-4">
+            {this.state.newTransaction ? 'New Transaction' : 'Edit Transaction'}
+          </MDBModalHeader>
+          <div className="m-4">
+            <TransactionForm
+              FIELDS={transactionFields}
+              onCancel={this.hideForm}
+              initialValues={this.state.transaction}
+              onTransactionSubmit={values => {
+                if (!this.state.newTransaction) {
+                  this.props.updateTransaction(values);
+                } else {
+                  this.props.submitTransaction(
+                    values,
+                    this.props.cashboxes._id
+                  );
+                }
+                this.hideForm();
+                this.clearTransaction();
+              }}
+            />
+          </div>
+        </MDBModal>
+      </div>
     );
   }
 

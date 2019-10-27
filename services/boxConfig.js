@@ -54,7 +54,7 @@ const _sumBox = box => {
 };
 
 const _decrementBox = (box, idealTotal) => {
-  const resultBox = box;
+  let resultBox = box;
   const total = Math.round(Number(idealTotal) * 100) / 100;
 
   console.log('=================================');
