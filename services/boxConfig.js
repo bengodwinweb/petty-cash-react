@@ -228,9 +228,41 @@ const makeChange = cashbox => {
   return cashbox.changeBox;
 };
 
+const resetCurrent = inputBox => {
+  let cashbox = inputBox;
+
+  Object.keys(emptyBox).forEach(key => {
+    console.log(`${cashbox.currentBox[key]} + ${cashbox.changeBox[key]}`);
+    cashbox.currentBox[key] += cashbox.changeBox[key];
+    cashbox.changeBox[key] = 0;
+  });
+
+  cashbox.currentBox.boxTotal = _sumBox(cashbox.currentBox);
+  cashbox.changeBox.boxTotal = 0;
+
+  return cashbox;
+};
+
+const resetChange = box => {
+  let resetBox = box;
+  console.log(resetBox);
+
+  Object.keys(emptyBox).forEach(key => {
+    resetBox[key] = 0;
+  });
+
+  resetBox.boxTotal = 0;
+
+  console.log(resetBox);
+
+  return resetBox;
+};
+
 module.exports = {
   defaultBox,
   emptyBox,
   updateBox,
-  makeChange
+  makeChange,
+  resetCurrent,
+  resetChange
 };

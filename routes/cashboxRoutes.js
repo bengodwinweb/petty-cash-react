@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const requireAuth = require('../middleware/auth/requireAuth');
-const { updateCashbox } = require('../services/cashboxConfig');
+const { updateCashbox, resetCashbox } = require('../services/cashboxConfig');
 const { defaultBox, emptyBox, updateBox } = require('../services/boxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
@@ -111,6 +111,30 @@ router.put('/:id', requireAuth, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(422).send(err);
+  }
+});
+
+// Reset
+router.get('/:id/reset', requireAuth, async (req, res) => {
+  let cashbox = await Cashbox.findById(req.params.id)
+    .populate('idealBox')
+    .populate('currentBox')
+    .populate('changeBox')
+    .populate('transactions');
+  console.log(cashbox);
+
+  cashbox = resetCashbox(cashbox);
+  console.log(cashbox);
+
+  try {
+    await cashbox.currentBox.save();
+    await cashbox.changeBox.save();
+    await cashbox.save();
+
+    return res.send(cashbox);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err);
   }
 });
 

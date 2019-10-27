@@ -236,7 +236,12 @@ class CashboxShow extends Component {
             >
               Download Form
             </MDBBtn>
-            <MDBBtn outline color="warning" className="ml-2">
+            <MDBBtn
+              outline
+              color="warning"
+              className="ml-2"
+              onClick={() => this.props.resetBox(this.props.cashboxes._id)}
+            >
               Reset Box
             </MDBBtn>
           </div>

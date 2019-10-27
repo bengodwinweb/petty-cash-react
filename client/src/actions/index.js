@@ -101,3 +101,10 @@ export const updateBox = values => async dispatch => {
 
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
+
+export const resetBox = cashboxId => async dispatch => {
+  console.log(`GET to /api/cashboxes/${cashboxId}/reset`);
+  const res = await axios.get(`/api/cashboxes/${cashboxId}/reset`);
+
+  dispatch({ type: FETCH_CASHBOX, payload: res.data });
+};

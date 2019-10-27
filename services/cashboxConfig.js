@@ -1,4 +1,12 @@
-const { updateBox, makeChange } = require('./boxConfig');
+const mongoose = require('mongoose');
+const {
+  updateBox,
+  makeChange,
+  resetCurrent,
+  resetChange
+} = require('./boxConfig');
+
+const Transaction = mongoose.model('Transaction');
 
 module.exports.updateCashbox = async cashbox => {
   console.log(`updatebox - ${cashbox._id}`);
@@ -30,4 +38,23 @@ module.exports.updateCashbox = async cashbox => {
   } catch (err) {
     console.log(err);
   }
+};
+
+module.exports.resetCashbox = inputCashbox => {
+  let cashbox = inputCashbox;
+
+  cashbox.transactions.forEach(async transaction => {
+    await Transaction.deleteOne({ _id: transaction._id }, err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
+  cashbox.transactions = [];
+  cashbox.currentSpent = 0;
+
+  cashbox = resetCurrent(cashbox);
+  console.log(cashbox);
+
+  return cashbox;
 };
