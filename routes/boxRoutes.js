@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const mongoose = require('mongoose');
 const requireAuth = require('../middleware/auth/requireAuth');
+const requireAuthorization = require('../middleware/auth/requireAuthorization');
 const { updateCashbox } = require('../services/cashboxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
 const Box = mongoose.model('Box');
 
-router.put('/', requireAuth, async (req, res) => {
+router.put('/', requireAuth, requireAuthorization, async (req, res) => {
   console.log(`PUT to /api/cashboxes/${req.params.id}/box/`);
 
   const editedBox = req.body;

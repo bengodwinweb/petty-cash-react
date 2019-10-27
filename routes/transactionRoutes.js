@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const mongoose = require('mongoose');
 const requireAuth = require('../middleware/auth/requireAuth');
+const requireAuthorization = require('../middleware/auth/requireAuthorization');
 const { updateCashbox } = require('../services/cashboxConfig');
 
 const Cashbox = mongoose.model('Cashbox');
 const Transaction = mongoose.model('Transaction');
 
 // Create transaction
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, requireAuthorization, async (req, res) => {
   console.log(`POST to /api/cashboxes/${req.params.id}/transactions`);
 
   let cashbox = await Cashbox.findOne({ _id: req.params.id })
@@ -36,75 +37,85 @@ router.post('/', requireAuth, async (req, res) => {
   res.redirect(`/api/cashboxes/${req.params.id}`);
 });
 
-router.put('/:transactionId', requireAuth, async (req, res) => {
-  console.log(
-    `PUT to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
-  );
-
-  let editedTransaction = req.body;
-
-  try {
-    await Transaction.findByIdAndUpdate(
-      req.params.transactionId,
-      editedTransaction
+router.put(
+  '/:transactionId',
+  requireAuth,
+  requireAuthorization,
+  async (req, res) => {
+    console.log(
+      `PUT to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
     );
-  } catch (err) {
-    console.log(err);
-    return res.status(422).send(err);
-  }
 
-  let cashbox = await Cashbox.findOne({ _id: req.params.id })
-    .populate('transactions')
-    .populate('currentBox')
-    .populate('changeBox')
-    .populate('idealBox');
+    let editedTransaction = req.body;
 
-  try {
-    updateCashbox(cashbox);
-
-    await cashbox.save();
-
-    return res.send(cashbox);
-  } catch (err) {
-    console.log(err);
-    return res.status(422).send(err);
-  }
-
-  res.redirect(`/api/cashboxes/${req.params.id}`);
-});
-
-// Remove Transaction
-router.delete('/:transactionId', requireAuth, async (req, res) => {
-  console.log(
-    `DELETE to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
-  );
-
-  // Delete transaction
-  await Transaction.deleteOne({ _id: req.params.transactionId }, err => {
-    if (err) {
+    try {
+      await Transaction.findByIdAndUpdate(
+        req.params.transactionId,
+        editedTransaction
+      );
+    } catch (err) {
       console.log(err);
       return res.status(422).send(err);
     }
-  });
 
-  // Find cashbox
-  let cashbox = await Cashbox.findOne({ _id: req.params.id })
-    .populate('transactions')
-    .populate('currentBox')
-    .populate('changeBox')
-    .populate('idealBox');
+    let cashbox = await Cashbox.findOne({ _id: req.params.id })
+      .populate('transactions')
+      .populate('currentBox')
+      .populate('changeBox')
+      .populate('idealBox');
 
-  try {
-    cashbox = await cashbox.save();
+    try {
+      updateCashbox(cashbox);
 
-    // Update cashbox
-    updateCashbox(cashbox);
-  } catch (err) {
-    console.log(err);
-    return res.status(422).send(err);
+      await cashbox.save();
+
+      return res.send(cashbox);
+    } catch (err) {
+      console.log(err);
+      return res.status(422).send(err);
+    }
+
+    res.redirect(`/api/cashboxes/${req.params.id}`);
   }
+);
 
-  res.send(cashbox);
-});
+// Remove Transaction
+router.delete(
+  '/:transactionId',
+  requireAuth,
+  requireAuthorization,
+  async (req, res) => {
+    console.log(
+      `DELETE to /api/cashboxes/${req.params.id}/transactions/${req.params.transactionId}`
+    );
+
+    // Delete transaction
+    await Transaction.deleteOne({ _id: req.params.transactionId }, err => {
+      if (err) {
+        console.log(err);
+        return res.status(422).send(err);
+      }
+    });
+
+    // Find cashbox
+    let cashbox = await Cashbox.findOne({ _id: req.params.id })
+      .populate('transactions')
+      .populate('currentBox')
+      .populate('changeBox')
+      .populate('idealBox');
+
+    try {
+      cashbox = await cashbox.save();
+
+      // Update cashbox
+      updateCashbox(cashbox);
+    } catch (err) {
+      console.log(err);
+      return res.status(422).send(err);
+    }
+
+    res.send(cashbox);
+  }
+);
 
 module.exports = router;

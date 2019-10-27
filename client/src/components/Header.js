@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   MDBNavbar,
   MDBNavbarBrand,
@@ -42,9 +43,9 @@ class Header extends Component {
         return (
           <div className="d-flex flex-column flex-md-row">
             <MDBNavItem key="1">
-              <a href="/api/users/current_user" className="nav-link">
+              <Link to="/cashboxes" className="nav-link">
                 {this.props.auth.email}
-              </a>
+              </Link>
             </MDBNavItem>
             <MDBNavItem key="2">
               <a href="/api/users/logout" className="nav-link">
