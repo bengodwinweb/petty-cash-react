@@ -16,6 +16,7 @@ router.put('/', requireAuth, async (req, res) => {
     await Box.findByIdAndUpdate(editedBox._id, editedBox);
   } catch (err) {
     console.log(err);
+    return res.status(422).send(err);
   }
 
   const cashbox = await Cashbox.findOne({ _id: req.params.id })

@@ -26,7 +26,6 @@ router.post('/', requireAuth, async (req, res) => {
   console.log('POST to /api/cashboxes');
   let { companyName, cashboxName, fundTotal = 500 } = req.body;
   fundTotal = parseFloat(fundTotal).toFixed(2);
-  console.log(fundTotal);
 
   // Init currentBox and idealBox
   let currentBox = new Box(_.clone(defaultBox));
@@ -120,9 +119,8 @@ router.delete('/:id', requireAuth, async (req, res) => {
   console.log(`DELETE to /api/cashboxes/${req.params.id}`);
   Cashbox.deleteOne({ _id: req.params.id }, err => {
     if (err) {
-      console.log("we be errin'");
       console.log(err);
-      return res.redirect(`/api/cashboxes/${req.params.id}`);
+      return res.status(422).send(err);
     }
   });
 

@@ -30,7 +30,7 @@ router.post('/', requireAuth, async (req, res) => {
     // Update cashbox
     updateCashbox(cashbox);
   } catch (err) {
-    res.status(422).send(err);
+    return res.status(422).send(err);
   }
 
   res.redirect(`/api/cashboxes/${req.params.id}`);
@@ -50,6 +50,7 @@ router.put('/:transactionId', requireAuth, async (req, res) => {
     );
   } catch (err) {
     console.log(err);
+    return res.status(422).send(err);
   }
 
   let cashbox = await Cashbox.findOne({ _id: req.params.id })
@@ -66,6 +67,7 @@ router.put('/:transactionId', requireAuth, async (req, res) => {
     return res.send(cashbox);
   } catch (err) {
     console.log(err);
+    return res.status(422).send(err);
   }
 
   res.redirect(`/api/cashboxes/${req.params.id}`);
@@ -81,6 +83,7 @@ router.delete('/:transactionId', requireAuth, async (req, res) => {
   await Transaction.deleteOne({ _id: req.params.transactionId }, err => {
     if (err) {
       console.log(err);
+      return res.status(422).send(err);
     }
   });
 
@@ -97,7 +100,8 @@ router.delete('/:transactionId', requireAuth, async (req, res) => {
     // Update cashbox
     updateCashbox(cashbox);
   } catch (err) {
-    res.status(422).send(err);
+    console.log(err);
+    return res.status(422).send(err);
   }
 
   res.send(cashbox);

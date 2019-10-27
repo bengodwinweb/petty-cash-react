@@ -48,7 +48,6 @@ class CashboxShow extends Component {
           initialValues={this.props.cashboxes}
           idealBox={this.props.cashboxes.idealBox}
           onSurveySubmit={values => {
-            console.log(values);
             this.props.updateCashbox(values);
             this.toggleEditForm();
           }}
