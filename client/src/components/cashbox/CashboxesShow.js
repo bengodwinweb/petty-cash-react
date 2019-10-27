@@ -5,7 +5,12 @@ import {
   MDBContainer,
   MDBRow,
   MDBCol,
-  MDBModal
+  MDBModal,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+  MDBIcon
 } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -175,48 +180,54 @@ class CashboxShow extends Component {
             <MDBCol className="">
               <MDBJumbotron fluid className="m-0 py-4">
                 <MDBContainer className="px-5">
-                  <h2 className="h1-responsive mt-4 mb-3 pb-2">
-                    {cashboxName}
-                  </h2>
+                  <div className="d-flex flex-row justify-content-between mb-3">
+                    <h2 className="h1-responsive">{cashboxName}</h2>
+                    <MDBDropdown>
+                      <MDBDropdownToggle color="white" className="p-2">
+                        <MDBIcon icon="ellipsis-v" />
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu basic>
+                        <MDBDropdownItem
+                          onClick={() => this.props.getPDF(fullCashbox)}
+                        >
+                          Download Form
+                        </MDBDropdownItem>
+                        <MDBDropdownItem
+                          onClick={() => this.toggle('cashboxEdit')}
+                        >
+                          Edit
+                        </MDBDropdownItem>
+                        <MDBDropdownItem
+                          onClick={() => this.toggle('idealBoxEdit')}
+                        >
+                          Configure Change
+                        </MDBDropdownItem>
+                        <MDBDropdownItem divider />
+                        <MDBDropdownItem
+                          onClick={() =>
+                            this.props.resetBox(this.props.cashboxes._id)
+                          }
+                          className="orange-text"
+                        >
+                          Reset Box
+                        </MDBDropdownItem>
+                        <MDBDropdownItem
+                          onClick={() =>
+                            this.props.deleteCashbox(_id, this.props.history)
+                          }
+                          className="red-text"
+                        >
+                          Delete
+                        </MDBDropdownItem>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </div>
                   <p className="my-2 lead" style={{ fontWeight: '200' }}>
                     Fund Total: ${fundTotal.toFixed(2)}
                   </p>
                   <p className="lead" style={{ fontWeight: '200' }}>
                     Remaining: ${currentBox.boxTotal.toFixed(2)}
                   </p>
-                  <hr className="my-2" />
-                  <div className="mt-4 mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-start">
-                    <Link to="/cashboxes">
-                      <MDBBtn outline color="default" className="">
-                        Back
-                      </MDBBtn>
-                    </Link>
-                    <MDBBtn
-                      outline
-                      color="default"
-                      onClick={() => this.toggle('cashboxEdit')}
-                    >
-                      Edit
-                    </MDBBtn>
-                    <MDBBtn
-                      outline
-                      color="default"
-                      onClick={() => this.toggle('idealBoxEdit')}
-                    >
-                      Edit Change
-                    </MDBBtn>
-                    <MDBBtn
-                      outline
-                      color="danger"
-                      size="small"
-                      className="small"
-                      onClick={() =>
-                        this.props.deleteCashbox(_id, this.props.history)
-                      }
-                    >
-                      Delete
-                    </MDBBtn>
-                  </div>
                 </MDBContainer>
               </MDBJumbotron>
             </MDBCol>
@@ -233,26 +244,30 @@ class CashboxShow extends Component {
             <div className="col-md-6 mb-3">{this.renderCurrentBox()}</div>
             <div className="col-md-6">{this.renderChangeBox()}</div>
           </div>
-
-          <div className="row justify-content-end mb-3 pr-2">
-            <MDBBtn
-              outline
-              color="default"
-              className=""
-              onClick={() => this.props.getPDF(fullCashbox)}
-            >
-              Download Form
-            </MDBBtn>
-            <MDBBtn
-              outline
-              color="warning"
-              className="ml-2"
-              onClick={() => this.props.resetBox(this.props.cashboxes._id)}
-            >
-              Reset Box
-            </MDBBtn>
-          </div>
         </MDBContainer>
+
+        <Link to="/cashboxes">
+          <MDBBtn
+            href=""
+            color=""
+            className="p-0"
+            style={{
+              position: 'fixed',
+              top: '55px',
+              left: '10px',
+              width: '50px',
+              height: '50px',
+              borderRadius: '50%'
+            }}
+          >
+            <MDBIcon
+              icon="angle-left"
+              size="lg"
+              style={{ color: 'black' }}
+              size="2x"
+            />
+          </MDBBtn>
+        </Link>
       </div>
     );
   }
