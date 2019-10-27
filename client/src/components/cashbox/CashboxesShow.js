@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { MDBJumbotron, MDBBtn, MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import {
+  MDBJumbotron,
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBModal
+} from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -14,10 +21,10 @@ import BoxForm from '../box/BoxForm';
 
 class CashboxShow extends Component {
   state = {
-    showEditForm: false,
-    editIdealBox: false,
-    editCurrentBox: false,
-    editChangeBox: false
+    cashboxEdit: false,
+    currentBoxEdit: false,
+    changeBoxEdit: false,
+    idealBoxEdit: false
   };
 
   componentDidMount() {
@@ -25,34 +32,28 @@ class CashboxShow extends Component {
     this.props.fetchCashbox(cashboxId);
   }
 
-  toggleEditForm = () => {
-    this.setState({ showEditForm: !this.state.showEditForm });
+  toggle = key => {
+    this.setState({ [key]: !this.state[key] });
   };
 
-  toggleEditIdealBox = () => {
-    this.setState({ editIdealBox: !this.state.editIdealBox });
-  };
-
-  toggleEditCurrentBox = () => {
-    this.setState({ editCurrentBox: !this.state.editCurrentBox });
-  };
-
-  toggleEditChangeBox = () => {
-    this.setState({ editChangeBox: !this.state.editChangeBox });
-  };
-
-  renderEditForm() {
+  renderCashboxEdit() {
     return (
-      <div className="my-4">
-        <CashboxForm
-          initialValues={this.props.cashboxes}
-          idealBox={this.props.cashboxes.idealBox}
-          onSurveySubmit={values => {
-            this.props.updateCashbox(values);
-            this.toggleEditForm();
-          }}
-          onCancel={this.toggleEditForm}
-        />
+      <div>
+        <MDBModal
+          isOpen={this.state.cashboxEdit}
+          toggle={() => this.toggle('cashboxEdit')}
+          centered
+        >
+          <CashboxForm
+            initialValues={this.props.cashboxes}
+            idealBox={this.props.cashboxes.idealBox}
+            onSurveySubmit={values => {
+              this.props.updateCashbox(values);
+              this.toggle('cashboxEdit');
+            }}
+            onCancel={() => this.toggle('cashboxEdit')}
+          />
+        </MDBModal>
       </div>
     );
   }
@@ -60,16 +61,22 @@ class CashboxShow extends Component {
   renderEditIdealBoxForm() {
     return (
       <div className="my-4">
-        <BoxForm
-          title="Ideal Change Configuration"
-          initialValues={this.props.cashboxes.idealBox}
-          boxTotal={this.props.cashboxes.fundTotal}
-          onFormSubmit={values => {
-            this.props.updateBox(values);
-            this.toggleEditIdealBox();
-          }}
-          onCancel={this.toggleEditIdealBox}
-        />
+        <MDBModal
+          isOpen={this.state.idealBoxEdit}
+          toggle={() => this.toggle('idealBoxEdit')}
+          centered
+        >
+          <BoxForm
+            title="Ideal Change Configuration"
+            initialValues={this.props.cashboxes.idealBox}
+            boxTotal={this.props.cashboxes.fundTotal}
+            onFormSubmit={values => {
+              this.props.updateBox(values);
+              this.toggle('idealBoxEdit');
+            }}
+            onCancel={() => this.toggle('idealBoxEdit')}
+          />
+        </MDBModal>
       </div>
     );
   }
@@ -83,7 +90,7 @@ class CashboxShow extends Component {
   }
 
   renderCurrentBox() {
-    if (this.state.editCurrentBox) {
+    if (this.state.currentBoxEdit) {
       return (
         <BoxForm
           title="Remaining Cash"
@@ -91,9 +98,9 @@ class CashboxShow extends Component {
           boxTotal={this.props.cashboxes.currentBox.boxTotal}
           onFormSubmit={values => {
             this.props.updateBox(values);
-            this.toggleEditCurrentBox();
+            this.toggle('currentBoxEdit');
           }}
-          onCancel={this.toggleEditCurrentBox}
+          onCancel={() => this.toggle('currentBoxEdit')}
         />
       );
     }
@@ -101,13 +108,13 @@ class CashboxShow extends Component {
       <Box
         box={this.props.cashboxes.currentBox}
         title="Remaining Cash"
-        action={this.toggleEditCurrentBox}
+        action={() => this.toggle('currentBoxEdit')}
       />
     );
   }
 
   renderChangeBox() {
-    if (this.state.editChangeBox) {
+    if (this.state.changeBoxEdit) {
       return (
         <BoxForm
           title="Change"
@@ -115,9 +122,9 @@ class CashboxShow extends Component {
           boxTotal={this.props.cashboxes.changeBox.boxTotal}
           onFormSubmit={values => {
             this.props.updateBox(values);
-            this.toggleEditChangeBox();
+            this.toggle('changeBoxEdit');
           }}
-          onCancel={this.toggleEditChangeBox}
+          onCancel={() => this.toggle('changeBoxEdit')}
         />
       );
     }
@@ -125,7 +132,7 @@ class CashboxShow extends Component {
       <Box
         box={this.props.cashboxes.changeBox}
         title="Change"
-        action={this.toggleEditChangeBox}
+        action={() => this.toggle('changeBoxEdit')}
       />
     );
   }
@@ -145,7 +152,7 @@ class CashboxShow extends Component {
     const fullCashbox = { cashbox, transactions, changeBox };
 
     if (!currentBox) {
-      return <div>Loading</div>;
+      return <div>Loading...</div>;
     }
 
     return (
@@ -187,14 +194,14 @@ class CashboxShow extends Component {
                     <MDBBtn
                       outline
                       color="default"
-                      onClick={this.toggleEditForm}
+                      onClick={() => this.toggle('cashboxEdit')}
                     >
                       Edit
                     </MDBBtn>
                     <MDBBtn
                       outline
                       color="default"
-                      onClick={this.toggleEditIdealBox}
+                      onClick={() => this.toggle('idealBoxEdit')}
                     >
                       Edit Change
                     </MDBBtn>
@@ -215,8 +222,8 @@ class CashboxShow extends Component {
             </MDBCol>
           </MDBRow>
 
-          {this.state.showEditForm ? this.renderEditForm() : null}
-          {this.state.editIdealBox ? this.renderEditIdealBoxForm() : null}
+          {this.renderCashboxEdit()}
+          {this.renderEditIdealBoxForm()}
 
           <div className="my-4">
             <TransactionList />
