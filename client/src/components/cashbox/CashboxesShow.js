@@ -15,6 +15,7 @@ import BoxForm from '../box/BoxForm';
 class CashboxShow extends Component {
   state = {
     showEditForm: false,
+    editIdealBox: false,
     editCurrentBox: false,
     editChangeBox: false
   };
@@ -26,6 +27,10 @@ class CashboxShow extends Component {
 
   toggleEditForm = () => {
     this.setState({ showEditForm: !this.state.showEditForm });
+  };
+
+  toggleEditIdealBox = () => {
+    this.setState({ editIdealBox: !this.state.editIdealBox });
   };
 
   toggleEditCurrentBox = () => {
@@ -41,11 +46,30 @@ class CashboxShow extends Component {
       <div className="my-4">
         <CashboxForm
           initialValues={this.props.cashboxes}
+          idealBox={this.props.cashboxes.idealBox}
           onSurveySubmit={values => {
+            console.log(values);
             this.props.updateCashbox(values);
             this.toggleEditForm();
           }}
           onCancel={this.toggleEditForm}
+        />
+      </div>
+    );
+  }
+
+  renderEditIdealBoxForm() {
+    return (
+      <div className="my-4">
+        <BoxForm
+          title="Ideal Change Configuration"
+          initialValues={this.props.cashboxes.idealBox}
+          boxTotal={this.props.cashboxes.fundTotal}
+          onFormSubmit={values => {
+            this.props.updateBox(values);
+            this.toggleEditIdealBox();
+          }}
+          onCancel={this.toggleEditIdealBox}
         />
       </div>
     );
@@ -67,8 +91,7 @@ class CashboxShow extends Component {
           initialValues={this.props.cashboxes.currentBox}
           boxTotal={this.props.cashboxes.currentBox.boxTotal}
           onFormSubmit={values => {
-            const type = 'currentBox';
-            this.props.updateBox(values, type);
+            this.props.updateBox(values);
             this.toggleEditCurrentBox();
           }}
           onCancel={this.toggleEditCurrentBox}
@@ -92,8 +115,7 @@ class CashboxShow extends Component {
           initialValues={this.props.cashboxes.changeBox}
           boxTotal={this.props.cashboxes.changeBox.boxTotal}
           onFormSubmit={values => {
-            const type = 'changeBox';
-            this.props.updateBox(values, type);
+            this.props.updateBox(values);
             this.toggleEditChangeBox();
           }}
           onCancel={this.toggleEditChangeBox}
@@ -172,6 +194,13 @@ class CashboxShow extends Component {
                     </MDBBtn>
                     <MDBBtn
                       outline
+                      color="default"
+                      onClick={this.toggleEditIdealBox}
+                    >
+                      Edit Change
+                    </MDBBtn>
+                    <MDBBtn
+                      outline
                       color="danger"
                       size="small"
                       className="small"
@@ -188,6 +217,7 @@ class CashboxShow extends Component {
           </MDBRow>
 
           {this.state.showEditForm ? this.renderEditForm() : null}
+          {this.state.editIdealBox ? this.renderEditIdealBoxForm() : null}
 
           <div className="my-4">
             <TransactionList />

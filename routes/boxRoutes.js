@@ -7,23 +7,29 @@ const { updateCashbox } = require('../services/cashboxConfig');
 const Cashbox = mongoose.model('Cashbox');
 const Box = mongoose.model('Box');
 
-router.put('/:type', requireAuth, async (req, res) => {
-  console.log(`PUT to /api/cashboxes/${req.params.id}/box/${req.params.type}`);
+router.put('/', requireAuth, async (req, res) => {
+  console.log(`PUT to /api/cashboxes/${req.params.id}/box/`);
 
-  const boxType = req.params.type;
+  const editedBox = req.body;
 
-  console.log(boxType);
-  // console.log(req.body);
-
-  if (boxType !== 'currentBox' && boxType !== 'changeBox') {
-    console.log('bad box type');
-    return res.send({ error: 'unprocessable box type' });
+  try {
+    await Box.findByIdAndUpdate(editedBox._id, editedBox);
+  } catch (err) {
+    console.log(err);
   }
 
-  let cashbox = await Cashbox.findOne({ _id: req.params.id }).populate(boxType);
-  console.log(cashbox);
+  const cashbox = await Cashbox.findOne({ _id: req.params.id })
+    .populate('transactions')
+    .populate('currentBox')
+    .populate('changeBox')
+    .populate('idealBox');
 
-  res.send({ message: 'ok' });
+  try {
+    return res.send(cashbox);
+  } catch (err) {
+    console.log(err);
+    return res.status(422).send(err);
+  }
 });
 
 module.exports = router;

@@ -109,7 +109,6 @@ router.put('/:id', requireAuth, async (req, res) => {
     await cashbox.save();
 
     return res.send(cashbox);
-    //return res.send(cashbox);
   } catch (err) {
     console.log(err);
     res.status(422).send(err);

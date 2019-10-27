@@ -1,8 +1,6 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
 
-const Cashbox = mongoose.model('Cashbox');
-
 // objects - emptyBox, defaultBox
 // internal functions - _sumBox(), _decrementBox(), _incrementBox()
 // exposed functions - updateBox(), makeChange()

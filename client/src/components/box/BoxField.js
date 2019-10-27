@@ -1,5 +1,4 @@
 import React from 'react';
-import boxFields from './boxFields';
 
 export default ({
   input,
@@ -25,7 +24,7 @@ export default ({
             className="form-control form-control-sm"
             style={{
               textAlign: 'center',
-              width: '48px',
+              width: '70px',
               fontWeight: '300',
               height: '25px'
             }}

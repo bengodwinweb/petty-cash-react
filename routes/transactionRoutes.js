@@ -14,6 +14,7 @@ router.post('/', requireAuth, async (req, res) => {
   let cashbox = await Cashbox.findOne({ _id: req.params.id })
     .populate('currentBox')
     .populate('changeBox')
+    .populate('idealBox')
     .populate('transactions');
 
   const transaction = new Transaction(req.body);

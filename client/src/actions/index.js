@@ -95,12 +95,9 @@ export const updateCashbox = values => async dispatch => {
   dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };
 
-export const updateBox = (values, type) => async dispatch => {
-  console.log(`PUT to /api/cashboxes/${values._cashbox}/box/${type}`, values);
-  const res = await axios.put(
-    `/api/cashboxes/${values._cashbox}/box/${type}`,
-    values
-  );
+export const updateBox = values => async dispatch => {
+  console.log(`PUT to /api/cashboxes/${values._cashbox}/box/`, values);
+  const res = await axios.put(`/api/cashboxes/${values._cashbox}/box/`, values);
 
-  // dispatch({ type: FETCH_CASHBOX, payload: res.data });
+  dispatch({ type: FETCH_CASHBOX, payload: res.data });
 };

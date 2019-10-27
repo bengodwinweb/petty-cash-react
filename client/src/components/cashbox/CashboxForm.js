@@ -45,6 +45,7 @@ class CashboxForm extends Component {
                 )}
               >
                 <div className="col-12">{this.renderFields()}</div>
+
                 <div className="mt-4 d-flex col-12 mb-4">
                   <MDBBtn
                     outline
