@@ -21,10 +21,13 @@ class Header extends Component {
   };
 
   renderContent() {
+    console.log(!this.props.auth)
     switch (this.props.auth) {
       case null:
+        console.log("auth = null")
         return;
       case false:
+        console.log("user not signed in")
         return (
           <div className="d-flex flex-column flex-md-row">
             <MDBNavItem key="0">
@@ -40,6 +43,7 @@ class Header extends Component {
           </div>
         );
       default:
+        console.log("user logged in")
         return (
           <div className="d-flex flex-column flex-md-row">
             <MDBNavItem key="1">

@@ -23,9 +23,9 @@ router.post('/signin', (req, res, next) => {
   })(req, res, next);
 });
 
-router.get('/current_user', requireAuth, (req, res) => {
+router.get('/current_user', (req, res) => {
   console.log('GET to /api/users/current_user');
-  res.send(req.user);
+  res.send(req.user || null);
 });
 
 router.get('/logout', requireAuth, (req, res) => {
