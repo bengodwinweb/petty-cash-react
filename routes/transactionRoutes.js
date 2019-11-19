@@ -16,7 +16,7 @@ router.post('/', requireAuth, requireAuthorization, async (req, res) => {
     .populate('currentBox')
     .populate('changeBox')
     .populate('idealBox')
-    .populate('transactions');
+    .populate({ path: "transactions", options: { sort: { expenseType: 'asc' } } });
 
   const transaction = new Transaction(req.body);
   transaction._cashbox = cashbox._id;
@@ -59,7 +59,7 @@ router.put(
     }
 
     let cashbox = await Cashbox.findOne({ _id: req.params.id })
-      .populate('transactions')
+      .populate({ path: "transactions", options: { sort: { expenseType: 'asc' } } })
       .populate('currentBox')
       .populate('changeBox')
       .populate('idealBox');
@@ -99,7 +99,7 @@ router.delete(
 
     // Find cashbox
     let cashbox = await Cashbox.findOne({ _id: req.params.id })
-      .populate('transactions')
+      .populate({ path: "transactions", options: { sort: { expenseType: 'asc' } } })
       .populate('currentBox')
       .populate('changeBox')
       .populate('idealBox');

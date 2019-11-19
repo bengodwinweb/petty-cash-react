@@ -171,8 +171,8 @@ class CashboxShow extends Component {
             )
           : null}
 
-        {currentBox.boxTotal !== fundTotal - currentSpent
-          ? this.renderMessage('danger', 'Incorrect amount of remaining cash')
+        {currentBox.boxTotal !== Math.round((fundTotal - currentSpent) * 100) / 100
+          ? this.renderMessage('danger', `Incorrect amount of remaining cash`)
           : null}
 
         <MDBContainer className="mt-4 p-0">

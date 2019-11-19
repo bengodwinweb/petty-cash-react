@@ -19,7 +19,7 @@ export default ({
           <input
             {...input}
             type="number"
-            step=".5"
+            step="1"
             min="0"
             className="form-control form-control-sm"
             style={{

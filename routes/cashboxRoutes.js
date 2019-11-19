@@ -72,7 +72,7 @@ router.get('/:id', requireAuth, requireAuthorization, async (req, res) => {
   console.log(`GET to /api/cashboxes/${req.params.id}`);
 
   const cashbox = await Cashbox.findOne({ _id: req.params.id })
-    .populate('transactions')
+    .populate({ path: "transactions", options: { sort: { expenseType: 'asc' } } })
     .populate('currentBox')
     .populate('changeBox')
     .populate('idealBox');

@@ -53,6 +53,75 @@ const _sumBox = box => {
   return Math.round(sum * 100) / 100;
 };
 
+const _cascadeChange = box => {
+  while (box.pennies >= 5) {
+    box.pennies -= 5;
+    box.nickels += 1;
+  }
+  while (box.dimes >= 3) {
+    box.dimes -= 3;
+    box.quarters += 1;
+    box.nickels += 1;
+  }
+  while (box.nickels >= 5) {
+    box.nickels -= 5;
+    box.quarters += 1;
+  }
+  while (box.nickels >= 2) {
+    box.nickels -= 2;
+    box.dimes += 1;
+  }
+  while (box.quarters >= 4) {
+    box.quarters -= 4;
+    box.ones += 1;
+  }
+  return box
+}
+
+const _addRolls = cashbox => {
+  if (cashbox.changeBox.quarters + cashbox.currentBox.quarters < cashbox.idealBox.quarters) {
+    if (cashbox.changeBox.tens > 0) {
+      cashbox.changeBox.tens -= 1;
+      cashbox.changeBox.qrolls += 1;
+    } else if (cashbox.changeBox.twenties > 0) {
+      cashbox.changeBox.twenties -= 1;
+      cashbox.changeBox.tens += 1;
+      cashbox.changeBox.qrolls += 1;
+    }
+  }
+  if (cashbox.changeBox.dimes + cashbox.currentBox.dimes < cashbox.idealBox.dimes) {
+    if (cashbox.changeBox.fives > 0) {
+      cashbox.changeBox.fives -= 1;
+      cashbox.changeBox.drolls += 1;
+    } else if (cashbox.changeBox.tens > 0) {
+      cashbox.changeBox.tens -= 1;
+      cashbox.changeBox.fives += 1;
+      cashbox.changeBox.drolls += 1;
+    }
+  }
+  if (cashbox.changeBox.nickels + cashbox.currentBox.nickels < cashbox.idealBox.nickels) {
+    if (cashbox.changeBox.ones > 5) {
+      cashbox.changeBox.ones -= 2;
+      cashbox.changeBox.nrolls += 1;
+    } else if (cashbox.changeBox.fives > 4) {
+      cashbox.changeBox.fives -= 1;
+      cashbox.changeBox.ones += 3;
+      cashbox.changeBox.nrolls += 1;
+    }
+  }
+  if (cashbox.changeBox.pennies + cashbox.currentBox.pennies < cashbox.idealBox.pennies) {
+    if (cashbox.changeBox.ones > 10) {
+      cashbox.changeBox.ones -= 1;
+      cashbox.changeBox.prolls += 2;
+    } else if (cashbox.changeBox.fives > 4) {
+      cashbox.changeBox.fives -= 1;
+      cashbox.changeBox.ones += 4;
+      cashbox.changeBox.prolls += 2;
+    }
+  }
+  return cashbox
+}
+
 const _decrementBox = (box, idealTotal) => {
   let resultBox = box;
   const total = Math.round(Number(idealTotal) * 100) / 100;
@@ -224,6 +293,12 @@ const makeChange = cashbox => {
 
   cashbox.changeBox = _incrementBox(cashbox.changeBox, cashbox.currentSpent);
   cashbox.changeBox = _decrementBox(cashbox.changeBox, cashbox.currentSpent);
+
+  // Cascade change back up if there are too many
+  cashbox.changeBox = _cascadeChange(cashbox.changeBox)
+
+  // Add coin rolls if coins are below ideal
+  cashbox = _addRolls(cashbox)
 
   return cashbox.changeBox;
 };

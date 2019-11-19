@@ -1,6 +1,6 @@
 export default [
   { label: 'Group', name: 'paidTo', type: 'text', required: true },
-  { label: 'Category', name: 'expenseType', type: 'text', required: true },
+  { label: 'Category', name: 'expenseType', type: 'dropdown', required: true },
   {
     label: 'Amount',
     name: 'amount',

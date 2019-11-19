@@ -21,7 +21,7 @@ router.put('/', requireAuth, requireAuthorization, async (req, res) => {
   }
 
   const cashbox = await Cashbox.findOne({ _id: req.params.id })
-    .populate('transactions')
+    .populate({ path: "transactions", options: { sort: { expenseType: 'asc' } } })
     .populate('currentBox')
     .populate('changeBox')
     .populate('idealBox');
