@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   MDBJumbotron,
   MDBBtn,
@@ -11,16 +11,16 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem,
   MDBIcon
-} from 'mdbreact';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import * as actions from '../../actions';
-import TransactionList from '../transaction/TransactionList';
-import Box from '../box/Box';
-import Message from '../Message';
-import CashboxForm from './CashboxForm';
-import BoxForm from '../box/BoxForm';
+} from "mdbreact";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import * as actions from "../../actions";
+import TransactionList from "../transaction/TransactionList";
+import Box from "../box/Box";
+import Message from "../Message";
+import CashboxForm from "./CashboxForm";
+import BoxForm from "../box/BoxForm";
 
 // TODO - Cashbox Edit, Download Form, Reset
 
@@ -46,7 +46,7 @@ class CashboxShow extends Component {
       <div>
         <MDBModal
           isOpen={this.state.cashboxEdit}
-          toggle={() => this.toggle('cashboxEdit')}
+          toggle={() => this.toggle("cashboxEdit")}
           centered
         >
           <CashboxForm
@@ -54,9 +54,9 @@ class CashboxShow extends Component {
             idealBox={this.props.cashboxes.idealBox}
             onSurveySubmit={values => {
               this.props.updateCashbox(values);
-              this.toggle('cashboxEdit');
+              this.toggle("cashboxEdit");
             }}
-            onCancel={() => this.toggle('cashboxEdit')}
+            onCancel={() => this.toggle("cashboxEdit")}
           />
         </MDBModal>
       </div>
@@ -68,7 +68,7 @@ class CashboxShow extends Component {
       <div className="my-4">
         <MDBModal
           isOpen={this.state.idealBoxEdit}
-          toggle={() => this.toggle('idealBoxEdit')}
+          toggle={() => this.toggle("idealBoxEdit")}
           centered
         >
           <BoxForm
@@ -77,9 +77,9 @@ class CashboxShow extends Component {
             boxTotal={this.props.cashboxes.fundTotal}
             onFormSubmit={values => {
               this.props.updateBox(values);
-              this.toggle('idealBoxEdit');
+              this.toggle("idealBoxEdit");
             }}
-            onCancel={() => this.toggle('idealBoxEdit')}
+            onCancel={() => this.toggle("idealBoxEdit")}
           />
         </MDBModal>
       </div>
@@ -103,9 +103,9 @@ class CashboxShow extends Component {
           boxTotal={this.props.cashboxes.currentBox.boxTotal}
           onFormSubmit={values => {
             this.props.updateBox(values);
-            this.toggle('currentBoxEdit');
+            this.toggle("currentBoxEdit");
           }}
-          onCancel={() => this.toggle('currentBoxEdit')}
+          onCancel={() => this.toggle("currentBoxEdit")}
         />
       );
     }
@@ -113,7 +113,7 @@ class CashboxShow extends Component {
       <Box
         box={this.props.cashboxes.currentBox}
         title="Remaining Cash"
-        action={() => this.toggle('currentBoxEdit')}
+        action={() => this.toggle("currentBoxEdit")}
       />
     );
   }
@@ -127,9 +127,9 @@ class CashboxShow extends Component {
           boxTotal={this.props.cashboxes.changeBox.boxTotal}
           onFormSubmit={values => {
             this.props.updateBox(values);
-            this.toggle('changeBoxEdit');
+            this.toggle("changeBoxEdit");
           }}
-          onCancel={() => this.toggle('changeBoxEdit')}
+          onCancel={() => this.toggle("changeBoxEdit")}
         />
       );
     }
@@ -137,7 +137,7 @@ class CashboxShow extends Component {
       <Box
         box={this.props.cashboxes.changeBox}
         title="Change"
-        action={() => this.toggle('changeBoxEdit')}
+        action={() => this.toggle("changeBoxEdit")}
       />
     );
   }
@@ -166,13 +166,14 @@ class CashboxShow extends Component {
 
         {currentSpent !== changeBox.boxTotal
           ? this.renderMessage(
-              'danger',
-              'Change does not match transactions total'
+              "danger",
+              "Change does not match transactions total"
             )
           : null}
 
-        {currentBox.boxTotal !== Math.round((fundTotal - currentSpent) * 100) / 100
-          ? this.renderMessage('danger', `Incorrect amount of remaining cash`)
+        {currentBox.boxTotal !==
+        Math.round((fundTotal - currentSpent) * 100) / 100
+          ? this.renderMessage("danger", `Incorrect amount of remaining cash`)
           : null}
 
         <MDBContainer className="mt-4 p-0">
@@ -182,7 +183,7 @@ class CashboxShow extends Component {
                 <MDBContainer className="px-5">
                   <div className="d-flex flex-row justify-content-between mb-3">
                     <h2 className="h1-responsive">{cashboxName}</h2>
-                    <MDBDropdown>
+                    <MDBDropdown dropleft>
                       <MDBDropdownToggle color="white" className="p-2">
                         <MDBIcon icon="ellipsis-v" />
                       </MDBDropdownToggle>
@@ -193,12 +194,12 @@ class CashboxShow extends Component {
                           Download Form
                         </MDBDropdownItem>
                         <MDBDropdownItem
-                          onClick={() => this.toggle('cashboxEdit')}
+                          onClick={() => this.toggle("cashboxEdit")}
                         >
                           Edit
                         </MDBDropdownItem>
                         <MDBDropdownItem
-                          onClick={() => this.toggle('idealBoxEdit')}
+                          onClick={() => this.toggle("idealBoxEdit")}
                         >
                           Configure Change
                         </MDBDropdownItem>
@@ -222,10 +223,10 @@ class CashboxShow extends Component {
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </div>
-                  <p className="my-2 lead" style={{ fontWeight: '200' }}>
+                  <p className="my-2 lead" style={{ fontWeight: "200" }}>
                     Fund Total: ${fundTotal.toFixed(2)}
                   </p>
-                  <p className="lead" style={{ fontWeight: '200' }}>
+                  <p className="lead" style={{ fontWeight: "200" }}>
                     Remaining: ${currentBox.boxTotal.toFixed(2)}
                   </p>
                 </MDBContainer>
@@ -252,18 +253,18 @@ class CashboxShow extends Component {
             color=""
             className="p-0"
             style={{
-              position: 'fixed',
-              top: '55px',
-              left: '10px',
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%'
+              position: "fixed",
+              top: "55px",
+              left: "10px",
+              width: "50px",
+              height: "50px",
+              borderRadius: "50%"
             }}
           >
             <MDBIcon
               icon="angle-left"
               size="lg"
-              style={{ color: 'black' }}
+              style={{ color: "black" }}
               size="2x"
             />
           </MDBBtn>
@@ -277,7 +278,4 @@ const mapStateToProps = ({ cashboxes }) => {
   return { cashboxes };
 };
 
-export default connect(
-  mapStateToProps,
-  actions
-)(withRouter(CashboxShow));
+export default connect(mapStateToProps, actions)(withRouter(CashboxShow));

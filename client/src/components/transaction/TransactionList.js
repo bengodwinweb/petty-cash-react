@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   MDBCard,
   MDBBtn,
@@ -6,14 +6,18 @@ import {
   MDBCardTitle,
   MDBIcon,
   MDBModal,
-  MDBModalHeader
-} from 'mdbreact';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-import transactionFields from './transactionFields';
-import TransactionForm from './TransactionForm';
-import * as actions from '../../actions';
+  MDBModalHeader,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem
+} from "mdbreact";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import transactionFields from "./transactionFields";
+import TransactionForm from "./TransactionForm";
+import * as actions from "../../actions";
 
 class TransactionList extends Component {
   state = {
@@ -71,7 +75,7 @@ class TransactionList extends Component {
         <MDBRow key={transaction._id} className="my-0">
           <div
             className="d-flex flex-row col-12 align-items-center"
-            style={{ fontWeight: '300' }}
+            style={{ fontWeight: "300" }}
           >
             <div className="col-5 col-lg-3 col-xl-2 h-auto">
               <p className="m-0">{transaction.paidTo}</p>
@@ -92,35 +96,34 @@ class TransactionList extends Component {
             <div className="col-2 d-none d-lg-inline">
               <p className="m-0">{transaction.description}</p>
             </div>
-            <div
-              className="d-none d-sm-flex ml-auto mr-2 align-items-center"
-              style={{ fontWeight: '200' }}
-            >
-              <Link
-                to="#"
-                className="mr-3"
-                style={{ color: 'rgb(40, 175, 157)' }}
-                onClick={() => {
-                  this.setTransaction(index);
-                  this.showForm();
-                }}
-              >
-                Edit
-              </Link>
-              <MDBBtn
-                outline
-                size="sm"
-                color="danger"
-                className="px-2 py-1"
-                onClick={() =>
-                  this.props.deleteTransaction(
-                    transaction._cashbox,
-                    transaction._id
-                  )
-                }
-              >
-                <MDBIcon icon="trash" />
-              </MDBBtn>
+            <div className="d-flex ml-auto" style={{ fontWeight: "200" }}>
+              <MDBDropdown dropleft>
+                <MDBDropdownToggle color="white" className="p-2">
+                  <MDBIcon icon="ellipsis-v" />
+                </MDBDropdownToggle>
+                <MDBDropdownMenu basic className="pr-0">
+                  <MDBDropdownItem
+                    className="orange-text"
+                    onClick={() => {
+                      this.setTransaction(index);
+                      this.showForm();
+                    }}
+                  >
+                    Edit
+                  </MDBDropdownItem>
+                  <MDBDropdownItem
+                    className="red-text"
+                    onClick={() =>
+                      this.props.deleteTransaction(
+                        transaction._cashbox,
+                        transaction._id
+                      )
+                    }
+                  >
+                    Delete
+                  </MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
             </div>
           </div>
         </MDBRow>
@@ -138,7 +141,7 @@ class TransactionList extends Component {
           centered
         >
           <MDBModalHeader toggle={this.toggleForm} className="pl-4">
-            {this.state.newTransaction ? 'New Transaction' : 'Edit Transaction'}
+            {this.state.newTransaction ? "New Transaction" : "Edit Transaction"}
           </MDBModalHeader>
           <div className="m-4">
             <TransactionForm
@@ -192,7 +195,7 @@ class TransactionList extends Component {
             </div>
           </MDBRow>
           {this.renderList()}
-          <div className="d-flex flex-column-reverse flex-sm-row-reverse justify-content-start mt-2 mb-3 align-items-sm-end">
+          <div className="d-flex flex-row-reverse justify-content-between justify-content-sm-start mt-2 mb-3 align-items-end pl-3">
             <MDBBtn
               outline
               size="sm"
@@ -201,11 +204,11 @@ class TransactionList extends Component {
                 this.showForm();
                 this.clearTransaction();
               }}
-              className="mr-0"
+              className="mr-0 px-3 px-sm-4"
             >
-              Add New
+              New
             </MDBBtn>
-            <h5 className="mr-5">
+            <h5 className="mr-2 mr-sm-5">
               <span className="mr-4">Total</span>$
               {parseFloat(this.props.cashboxes.currentSpent).toFixed(2)}
             </h5>
@@ -222,7 +225,4 @@ const mapStateToProps = ({ cashboxes }) => {
   return { cashboxes };
 };
 
-export default connect(
-  mapStateToProps,
-  actions
-)(withRouter(TransactionList));
+export default connect(mapStateToProps, actions)(withRouter(TransactionList));
