@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
-import { reduxForm, Field } from 'redux-form';
-import SurveyField from '../auth/SurveyField';
-import cashboxFields from './cashboxFields';
+import React, { Component } from "react";
+import { MDBRow, MDBCol, MDBCard, MDBBtn } from "mdbreact";
+import { reduxForm, Field } from "redux-form";
+import SurveyField from "../auth/SurveyField";
+import cashboxFields from "./cashboxFields";
 
 class CashboxForm extends Component {
   state = {
@@ -34,12 +34,16 @@ class CashboxForm extends Component {
   render() {
     return (
       <div>
-        <MDBCard className="pt-4 px-4" key="transactionList">
+        <MDBCard
+          className="pt-4 px-4"
+          key="transactionList"
+          color="blue-grey darken-3"
+        >
           <MDBRow className="d-flex justify-content-center">
             <MDBCol className="col-lg-8">
               <form
                 className=""
-                style={{ flexWrap: 'wrap' }}
+                style={{ flexWrap: "wrap" }}
                 onSubmit={this.props.handleSubmit(values =>
                   this.props.onSurveySubmit(values)
                 )}
@@ -77,14 +81,14 @@ const validate = values => {
   const errors = {};
 
   const validateFundTotal = num => {
-    return num < 0 || num > 1000000 ? 'Number out of range' : '';
+    return num < 0 || num > 1000000 ? "Number out of range" : "";
   };
 
   cashboxFields.forEach(({ name }) => {
     errors.fundTotal = validateFundTotal(values.fundTotal);
 
     if (!values[name]) {
-      errors[name] = 'This field is required';
+      errors[name] = "This field is required";
     }
   });
 
@@ -93,5 +97,5 @@ const validate = values => {
 
 export default reduxForm({
   validate,
-  form: 'cashboxForm'
+  form: "cashboxForm"
 })(CashboxForm);

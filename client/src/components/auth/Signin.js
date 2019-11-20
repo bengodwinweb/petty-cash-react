@@ -1,20 +1,19 @@
 import React, { Component } from "react";
-import { MDBCard, MDBBtn, MDBIcon, MDBCardBody } from "mdbreact";
+import { MDBBtn, MDBIcon, MDBCard, MDBCardBody } from "mdbreact";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import SigninForm from "./SigninForm";
 import * as actions from "../../actions";
 
-class Signup extends Component {
+class Signin extends Component {
   render() {
     return (
       <MDBCard className="p-4" color="blue-grey darken-3">
         <div className="ml-3 mt-3 mb-4">
-          <h2>Create an Account</h2>
+          <h2>Sign in</h2>
           <div className="d-flex flex-row align-items-start">
             <div className="d-flex text-center">
               <p className="" style={{ verticalAlign: "middle" }}>
-                Alreay have an account?
+                New user?
               </p>
             </div>
             <button
@@ -27,17 +26,17 @@ class Signup extends Component {
                 color: "rgb(91, 184, 173)"
               }}
             >
-              Sign In
+              Create an account
             </button>
           </div>
         </div>
         <MDBCardBody className="text-center pt-0">
           <SigninForm
             onSurveySubmit={values =>
-              this.props.submitSignup(values, this.props.history)
+              this.props.submitSignin(values, this.props.history)
             }
           />
-          <div className="my-4 px-4">
+          <div className="my-5">
             <hr className="mb-0" style={{ borderColor: "white" }} />
             <p className="mt-0 lead">Or</p>
           </div>
@@ -54,28 +53,8 @@ class Signup extends Component {
           </div>
         </MDBCardBody>
       </MDBCard>
-
-      /* <div>
-        <h3 className="mb-4">Register</h3>
-        <div className="">
-          <MDBBtn
-            social="gplus"
-            color="blue"
-            href="/api/users/google"
-            className="mb-4 ml-4"
-          >
-            <MDBIcon fab icon="google" className="mr-3" />
-            Sign up with Google
-          </MDBBtn>
-          <SigninForm
-            onSurveySubmit={values =>
-              this.props.submitSignup(values, this.props.history)
-            }
-          />
-        </div>
-      </div> */
     );
   }
 }
 
-export default connect(null, actions)(withRouter(Signup));
+export default connect(null, actions)(Signin);

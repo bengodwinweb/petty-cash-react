@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { MDBCardTitle, MDBRow, MDBCol, MDBCard, MDBBtn } from 'mdbreact';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
-import BoxField from './BoxField';
-import boxFields from './boxFields';
-import sumBox from '../../utils/sumBox';
-import Message from '../Message';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { MDBCardTitle, MDBRow, MDBCol, MDBCard, MDBBtn } from "mdbreact";
+import { reduxForm, Field, formValueSelector } from "redux-form";
+import BoxField from "./BoxField";
+import boxFields from "./boxFields";
+import sumBox from "../../utils/sumBox";
+import Message from "../Message";
 
 class BoxForm extends Component {
   state = {
@@ -33,7 +33,7 @@ class BoxForm extends Component {
       return {
         label: boxFields[key].string,
         name: key,
-        type: 'number',
+        type: "number",
         multiplier: boxFields[key].value
       };
     });
@@ -60,7 +60,11 @@ class BoxForm extends Component {
     const isEnabled = this.validate(this.props.values);
     return (
       <div>
-        <MDBCard className="pt-4 px-4" key="transactionList">
+        <MDBCard
+          className="pt-4 px-4"
+          key="transactionList"
+          color="blue-grey darken-3"
+        >
           <MDBCardTitle className="ml-3 mt-3 mb-4">
             {this.props.title}
           </MDBCardTitle>
@@ -69,7 +73,7 @@ class BoxForm extends Component {
             <MDBCol className="">
               <form
                 className=""
-                style={{ flexWrap: 'wrap' }}
+                style={{ flexWrap: "wrap" }}
                 onSubmit={this.props.handleSubmit(values => {
                   this.props.onFormSubmit(values);
                 })}
@@ -119,7 +123,7 @@ class BoxForm extends Component {
   }
 }
 
-const selector = formValueSelector('boxForm');
+const selector = formValueSelector("boxForm");
 const fields = Object.keys(boxFields);
 
 // use connect to map form values to props
@@ -128,4 +132,4 @@ BoxForm = connect(state => {
   return { values, ...state };
 })(BoxForm);
 
-export default reduxForm({ form: 'boxForm' })(BoxForm);
+export default reduxForm({ form: "boxForm" })(BoxForm);

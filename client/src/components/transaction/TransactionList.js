@@ -13,7 +13,6 @@ import {
   MDBDropdownItem
 } from "mdbreact";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import transactionFields from "./transactionFields";
 import TransactionForm from "./TransactionForm";
@@ -139,11 +138,16 @@ class TransactionList extends Component {
           isOpen={this.state.showForm}
           toggle={this.toggleForm}
           centered
+          className="purple"
         >
-          <MDBModalHeader toggle={this.toggleForm} className="pl-4">
+          <MDBModalHeader
+            toggle={this.toggleForm}
+            className="pl-4"
+            style={{ backgroundColor: "rgb(58, 71, 78)" }}
+          >
             {this.state.newTransaction ? "New Transaction" : "Edit Transaction"}
           </MDBModalHeader>
-          <div className="m-4">
+          <div className="p-4" style={{ backgroundColor: "rgb(58, 71, 78)" }}>
             <TransactionForm
               FIELDS={transactionFields}
               onCancel={this.hideForm}
@@ -170,7 +174,11 @@ class TransactionList extends Component {
   render() {
     return (
       <div>
-        <MDBCard className="pt-4 px-4" key="transactionList">
+        <MDBCard
+          className="pt-4 px-4"
+          key="transactionList"
+          color="blue-grey darken-3"
+        >
           <MDBCardTitle className="ml-3 mt-3 mb-4">Transactions</MDBCardTitle>
           <MDBRow key="headers" className="">
             <div className="d-flex flex-row justify-content-start col-12">

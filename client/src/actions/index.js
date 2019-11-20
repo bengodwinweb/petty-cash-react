@@ -1,37 +1,37 @@
-import axios from 'axios';
-import { FETCH_USER, FETCH_CASHBOX_LIST, FETCH_CASHBOX } from './types';
-import makePdf from '../utils/makePdf';
+import axios from "axios";
+import { FETCH_USER, FETCH_CASHBOX_LIST, FETCH_CASHBOX } from "./types";
+import makePdf from "../utils/makePdf";
 
 export const fetchUser = () => async dispatch => {
-  const res = await axios.get('/api/users/current_user');
+  const res = await axios.get("/api/users/current_user");
 
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
 export const submitSignup = (values, history) => async dispatch => {
-  const res = await axios.post('/api/users/signup', values);
+  const res = await axios.post("/api/users/signup", values);
 
-  history.push('/cashboxes');
+  history.push("/");
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
 export const submitSignin = (values, history) => async dispatch => {
-  const res = await axios.post('/api/users/signin', values);
+  const res = await axios.post("/api/users/signin", values);
 
-  history.push('/cashboxes');
+  history.push("/");
   dispatch({ type: FETCH_USER, payload: res.data });
 };
 
 export const fetchCashboxes = () => async dispatch => {
-  const res = await axios.get('/api/cashboxes');
+  const res = await axios.get("/api/cashboxes");
 
   dispatch({ type: FETCH_CASHBOX_LIST, payload: res.data });
 };
 
 export const submitCashbox = (values, history) => async dispatch => {
-  const res = await axios.post('/api/cashboxes', values);
+  const res = await axios.post("/api/cashboxes", values);
 
-  history.push('/cashboxes');
+  history.push("/");
   dispatch({ type: FETCH_CASHBOX_LIST, payload: res.data });
 };
 
@@ -59,7 +59,7 @@ export const deleteCashbox = (cashboxId, history) => dispatch => {
   console.log(`DELETE to /api/cashboxes/${cashboxId}`);
   axios.delete(`/api/cashboxes/${cashboxId}`);
 
-  history.push('/cashboxes');
+  history.push("/");
 };
 
 export const deleteTransaction = (

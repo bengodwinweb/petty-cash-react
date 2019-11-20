@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   MDBNavbar,
   MDBNavbarBrand,
@@ -8,8 +8,8 @@ import {
   MDBNavbarToggler,
   MDBCollapse,
   MDBIcon
-} from 'mdbreact';
-import { connect } from 'react-redux';
+} from "mdbreact";
+import { connect } from "react-redux";
 
 class Header extends Component {
   state = {
@@ -59,8 +59,8 @@ class Header extends Component {
 
   render() {
     return (
-      <MDBNavbar color="default-color" dark expand="md" className="mb-4">
-        <MDBNavbarBrand href={this.props.auth ? '/cashboxes' : '/'}>
+      <MDBNavbar color="default-color" dark expand="md" className="mb-0">
+        <MDBNavbarBrand href="/">
           <MDBIcon icon="cash-register" className="mr-2" />
           Petty Cash
         </MDBNavbarBrand>

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn } from 'mdbreact';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import transactionFields from './transactionFields';
-import TransactionField from './TransactionField';
+import React, { Component } from "react";
+import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
+import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
+import transactionFields from "./transactionFields";
+import TransactionField from "./TransactionField";
 
 class Form extends Component {
   decrease = () => {
@@ -37,7 +37,7 @@ class Form extends Component {
             <MDBCol className="col-lg-8">
               <form
                 className=""
-                style={{ flexWrap: 'wrap' }}
+                style={{ flexWrap: "wrap" }}
                 onSubmit={this.props.handleSubmit(values =>
                   this.props.onTransactionSubmit(values)
                 )}
@@ -68,7 +68,7 @@ const validate = values => {
     }
 
     if (!values[name] && required) {
-      errors[name] = 'This field is required';
+      errors[name] = "This field is required";
     }
   });
 
@@ -83,6 +83,6 @@ Form = connect(mapStateToProps)(Form);
 
 export default reduxForm({
   validate,
-  form: 'transactionForm',
+  form: "transactionForm",
   enableReinitialize: true
 })(Form);

@@ -1,6 +1,6 @@
-import React from 'react';
-import { MDBCard, MDBCardTitle, MDBBtn } from 'mdbreact';
-import BOX_FIELDS from './boxFields';
+import React from "react";
+import { MDBCard, MDBCardTitle, MDBBtn } from "mdbreact";
+import BOX_FIELDS from "./boxFields";
 
 // TODO - Box Edit
 
@@ -10,20 +10,20 @@ const Box = ({ box, title, action }) => {
       <div
         key={key}
         className="d-flex justify-content-between my-2"
-        style={{ fontWeight: '300' }}
+        style={{ fontWeight: "300" }}
       >
         <div className="col-4 col-sm-5">{BOX_FIELDS[key].string}:</div>
         <div className="col-4 d-flex justify-content-center">
-          {box[key] > 0 ? box[key] : '-'}
+          {box[key] > 0 ? box[key] : "-"}
         </div>
         <div className="d-flex col-4 col-sm-3 justify-content-end">
           <span className="mr-sm-auto">
-            {box[key] * BOX_FIELDS[key].value > 0 ? '$' : ''}
+            {box[key] * BOX_FIELDS[key].value > 0 ? "$" : ""}
           </span>
           <span>
             {box[key] * BOX_FIELDS[key].value > 0
               ? (box[key] * BOX_FIELDS[key].value).toFixed(2)
-              : '-'}
+              : "-"}
           </span>
         </div>
       </div>
@@ -31,7 +31,7 @@ const Box = ({ box, title, action }) => {
   };
 
   return (
-    <MDBCard className="pt-4 px-4">
+    <MDBCard className="pt-4 px-4" color="blue-grey darken-3">
       <MDBCardTitle className="ml-3 mt-3 mb-4">{title}</MDBCardTitle>
       <div className="">{renderValues()}</div>
       <div className="mt-2 mb-2 d-flex justify-content-between">

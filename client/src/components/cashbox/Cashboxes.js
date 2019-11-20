@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { MDBBtn, MDBIcon } from 'mdbreact';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import CashboxesList from './CashboxesList';
+import React, { Component } from "react";
+import { MDBBtn, MDBIcon } from "mdbreact";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import CashboxesList from "./CashboxesList";
 
 class Cashboxes extends Component {
   render() {
@@ -13,15 +13,16 @@ class Cashboxes extends Component {
         <Link to="/cashboxes/new">
           <MDBBtn
             href=""
-            color="blue"
             className="p-0"
             style={{
-              position: 'fixed',
-              bottom: '30px',
-              right: '35px',
-              width: '70px',
-              height: '70px',
-              borderRadius: '50%'
+              position: "fixed",
+              bottom: "30px",
+              right: "35px",
+              width: "70px",
+              height: "70px",
+              borderRadius: "50%",
+              backgroundColor: "rgb(91,184,173)",
+              color: "white"
             }}
           >
             <MDBIcon icon="plus" size="2x" />

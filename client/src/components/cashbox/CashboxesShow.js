@@ -161,8 +161,8 @@ class CashboxShow extends Component {
     }
 
     return (
-      <div>
-        <h2 className="ml-3 pt-2 display-4 pb-2">{companyName}</h2>
+      <div className="container">
+        <h2 className="pt-2 display-4 pb-2">{companyName}</h2>
 
         {currentSpent !== changeBox.boxTotal
           ? this.renderMessage(
@@ -176,18 +176,25 @@ class CashboxShow extends Component {
           ? this.renderMessage("danger", `Incorrect amount of remaining cash`)
           : null}
 
-        <MDBContainer className="mt-4 p-0">
+        <div className="mt-4">
           <MDBRow className="">
             <MDBCol className="">
-              <MDBJumbotron fluid className="m-0 py-4">
+              <MDBJumbotron
+                fluid
+                className="m-0 py-4"
+                style={{ backgroundColor: "rgb(58, 71, 78" }}
+              >
                 <MDBContainer className="px-5">
                   <div className="d-flex flex-row justify-content-between mb-3">
                     <h2 className="h1-responsive">{cashboxName}</h2>
-                    <MDBDropdown dropleft>
-                      <MDBDropdownToggle color="white" className="p-2">
+                    <MDBDropdown dropleft className="p-0">
+                      <MDBDropdownToggle
+                        color="blue-grey darken-4"
+                        className="p-2"
+                      >
                         <MDBIcon icon="ellipsis-v" />
                       </MDBDropdownToggle>
-                      <MDBDropdownMenu basic>
+                      <MDBDropdownMenu color="blue-grey darken-3">
                         <MDBDropdownItem
                           onClick={() => this.props.getPDF(fullCashbox)}
                         >
@@ -241,20 +248,22 @@ class CashboxShow extends Component {
             <TransactionList />
           </div>
 
-          <div className="row justify-content-between mt-2 mb-2">
-            <div className="col-md-6 mb-3">{this.renderCurrentBox()}</div>
+          <div className="row justify-content-between mt-2">
+            <div className="col-md-6">{this.renderCurrentBox()}</div>
             <div className="col-md-6">{this.renderChangeBox()}</div>
           </div>
-        </MDBContainer>
+        </div>
 
-        <div className="d-flex flex-row justify-content-center justify-content-sm-end mt-3 mb-4">
+        <div className="d-flex flex-row justify-content-center justify-content-sm-end mt-2 mb-3">
           <MDBBtn
+            outline
             color="default"
             onClick={() => this.props.getPDF(fullCashbox)}
           >
             Download PDF
           </MDBBtn>
           <MDBBtn
+            outline
             color="warning"
             onClick={() => this.props.resetBox(this.props.cashboxes._id)}
           >
@@ -276,12 +285,7 @@ class CashboxShow extends Component {
               borderRadius: "50%"
             }}
           >
-            <MDBIcon
-              icon="angle-left"
-              size="lg"
-              style={{ color: "black" }}
-              size="2x"
-            />
+            <MDBIcon icon="angle-left" size="lg" style={{ color: "black" }} />
           </MDBBtn>
         </Link>
       </div>
