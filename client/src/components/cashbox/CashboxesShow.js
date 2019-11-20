@@ -247,6 +247,21 @@ class CashboxShow extends Component {
           </div>
         </MDBContainer>
 
+        <div className="d-flex flex-row justify-content-center justify-content-sm-end mt-3 mb-4">
+          <MDBBtn
+            color="default"
+            onClick={() => this.props.getPDF(fullCashbox)}
+          >
+            Download PDF
+          </MDBBtn>
+          <MDBBtn
+            color="warning"
+            onClick={() => this.props.resetBox(this.props.cashboxes._id)}
+          >
+            Reset Box
+          </MDBBtn>
+        </div>
+
         <Link to="/cashboxes">
           <MDBBtn
             href=""
