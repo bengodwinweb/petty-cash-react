@@ -97,7 +97,7 @@ class TransactionList extends Component {
             </div>
             <div className="d-flex ml-auto" style={{ fontWeight: "200" }}>
               <MDBDropdown dropleft>
-                <MDBDropdownToggle color="white" className="p-2">
+                <MDBDropdownToggle color="blue-grey darken-4" className="p-2">
                   <MDBIcon icon="ellipsis-v" />
                 </MDBDropdownToggle>
                 <MDBDropdownMenu basic className="pr-0">
