@@ -138,7 +138,7 @@ class TransactionList extends Component {
           isOpen={this.state.showForm}
           toggle={this.toggleForm}
           centered
-          className="purple"
+          className=""
         >
           <MDBModalHeader
             toggle={this.toggleForm}
