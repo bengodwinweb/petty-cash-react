@@ -36,7 +36,7 @@ class Signin extends Component {
               this.props.submitSignin(values, this.props.history)
             }
           />
-          <div className="my-5">
+          <div className="my-4 px-4">
             <hr className="mb-0" style={{ borderColor: "white" }} />
             <p className="mt-0 lead">Or</p>
           </div>

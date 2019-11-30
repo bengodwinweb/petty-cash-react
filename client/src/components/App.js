@@ -11,6 +11,10 @@ import Cashboxes from "./cashbox/Cashboxes";
 import CashboxesNew from "./cashbox/CashboxesNew";
 import CashboxesShow from "./cashbox/CashboxesShow";
 
+const Account = () => {
+  return <div>Account</div>;
+};
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
@@ -65,6 +69,10 @@ class App extends Component {
                 <Route
                   path="/cashboxes/show/:cashboxId"
                   component={this.isAuthenticated() ? CashboxesShow : Login}
+                />
+                <Route
+                  path="/users/account"
+                  component={this.isAuthenticated() ? Account : Login}
                 />
               </div>
             </div>

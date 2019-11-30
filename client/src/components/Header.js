@@ -7,7 +7,11 @@ import {
   MDBNavItem,
   MDBNavbarToggler,
   MDBCollapse,
-  MDBIcon
+  MDBIcon,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem
 } from "mdbreact";
 import { connect } from "react-redux";
 
@@ -42,6 +46,26 @@ class Header extends Component {
       default:
         return (
           <div className="d-flex flex-column flex-md-row">
+            <MDBDropdown>
+              <MDBDropdownToggle nav caret>
+                <span className="mr-2">{this.props.auth.email}</span>
+              </MDBDropdownToggle>
+              <MDBDropdownMenu>
+                <MDBDropdownItem>
+                  <Link to="/users/account">Account</Link>
+                </MDBDropdownItem>
+                <MDBDropdownItem divider />
+                <MDBDropdownItem>
+                  <a
+                    href="/api/users/logout"
+                    className="nav-link"
+                    style={{ color: "black" }}
+                  >
+                    Logout
+                  </a>
+                </MDBDropdownItem>
+              </MDBDropdownMenu>
+            </MDBDropdown>
             <MDBNavItem key="1">
               <Link to="/cashboxes" className="nav-link">
                 {this.props.auth.email}

@@ -17,13 +17,14 @@ class Login extends Component {
     }
     return <Signin toggle={this.toggleNewUser} />;
   }
+
   render() {
     return (
       <div className="d-flex flex-row">
         <div className="d-none d-md-flex align-items-center col-md-5 col-lg-6 col-xl-7">
           <div className="pl-3">
             <h1>Petty Cash</h1>
-            <h4>Sign in or create an account</h4>
+            <h4>Sign in or Create an Account</h4>
           </div>
         </div>
 
