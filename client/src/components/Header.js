@@ -48,7 +48,9 @@ class Header extends Component {
           <div className="d-flex flex-column flex-md-row">
             <MDBDropdown>
               <MDBDropdownToggle nav caret>
-                <span className="mr-2">{this.props.auth.email}</span>
+                <span className="mr-2" style={{ color: "white" }}>
+                  {this.props.auth.email}
+                </span>
               </MDBDropdownToggle>
               <MDBDropdownMenu>
                 <MDBDropdownItem>
@@ -66,16 +68,6 @@ class Header extends Component {
                 </MDBDropdownItem>
               </MDBDropdownMenu>
             </MDBDropdown>
-            <MDBNavItem key="1">
-              <Link to="/cashboxes" className="nav-link">
-                {this.props.auth.email}
-              </Link>
-            </MDBNavItem>
-            <MDBNavItem key="2">
-              <a href="/api/users/logout" className="nav-link">
-                Logout
-              </a>
-            </MDBNavItem>
           </div>
         );
     }

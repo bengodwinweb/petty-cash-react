@@ -44,6 +44,14 @@ class Form extends Component {
               >
                 <div className="col-12">{this.renderFields()}</div>
                 <div className="text-center mt-4">
+                  <MDBBtn
+                    outline
+                    color="danger"
+                    className=""
+                    onClick={this.props.onCancel}
+                  >
+                    Cancel
+                  </MDBBtn>
                   <MDBBtn outline color="default" type="submit" className="">
                     Submit
                   </MDBBtn>

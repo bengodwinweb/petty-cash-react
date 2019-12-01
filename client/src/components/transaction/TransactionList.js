@@ -10,7 +10,8 @@ import {
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
-  MDBDropdownItem
+  MDBDropdownItem,
+  MDBModalBody
 } from "mdbreact";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -138,7 +139,7 @@ class TransactionList extends Component {
           isOpen={this.state.showForm}
           toggle={this.toggleForm}
           centered
-          className=""
+          className="form-dark"
         >
           <MDBModalHeader
             toggle={this.toggleForm}
@@ -147,7 +148,10 @@ class TransactionList extends Component {
           >
             {this.state.newTransaction ? "New Transaction" : "Edit Transaction"}
           </MDBModalHeader>
-          <div className="p-4" style={{ backgroundColor: "rgb(58, 71, 78)" }}>
+          <MDBModalBody
+            className="p-4"
+            style={{ backgroundColor: "rgb(58, 71, 78)" }}
+          >
             <TransactionForm
               FIELDS={transactionFields}
               onCancel={this.hideForm}
@@ -165,7 +169,7 @@ class TransactionList extends Component {
                 this.clearTransaction();
               }}
             />
-          </div>
+          </MDBModalBody>
         </MDBModal>
       </div>
     );

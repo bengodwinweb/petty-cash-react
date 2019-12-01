@@ -49,7 +49,7 @@ class App extends Component {
                 overflow: "auto",
                 top: "0px",
                 left: "0px",
-                background: "rgba(0, 43, 54, 0.45)",
+                background: "rgba(0, 0, 0, 0.85)",
                 color: "white"
               }}
             >

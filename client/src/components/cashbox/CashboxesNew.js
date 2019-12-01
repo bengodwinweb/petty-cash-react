@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import CashboxForm from './CashboxForm';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import CashboxForm from "./CashboxForm";
+import * as actions from "../../actions";
 
 class Signup extends Component {
   render() {
@@ -14,6 +14,7 @@ class Signup extends Component {
             onSurveySubmit={values =>
               this.props.submitCashbox(values, this.props.history)
             }
+            onCancel={() => this.props.history.push("/")}
           />
         </div>
       </div>
@@ -21,7 +22,4 @@ class Signup extends Component {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(withRouter(Signup));
+export default connect(null, actions)(withRouter(Signup));
